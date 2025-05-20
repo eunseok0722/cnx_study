@@ -11,24 +11,26 @@ const Editor = ({onCreate}: {onCreate: (content: string) => void}) => {
   const [content, setContent] = useState("");
   
   // useRef
-  const contentRef = useRef(null);
+  const contentRef = useRef<HTMLInputElement>(null);
   
   // onChangeContent
-  const onChangeContent = (e) => {
+  const onChangeContent = (e: React.ChangeEvent<HTMLInputElement>) => {
     setContent(e.target.value);
   };
   
   // onSubmit
   const onSubmit = () => {
-    contentRef.current.focus();
+    if (contentRef.current) {
+      contentRef.current.focus();
+    }
     if (content === "") return;
     onCreate(content);
     setContent("");
   };
 
   // onKeyDown
-  const onKeyDown = (e) => {
-    if (e.key === "Enter" || e.key === 13) {
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" || e.key === "13") {
       onSubmit();
     }
   };

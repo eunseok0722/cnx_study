@@ -26,7 +26,7 @@ const List = ({
   const [search, setSearch] = useState("");
 
   // onChangeSearch
-  const onChangeSearch = (e) => {
+  const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
 

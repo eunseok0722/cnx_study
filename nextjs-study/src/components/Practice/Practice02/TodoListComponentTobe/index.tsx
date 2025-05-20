@@ -37,7 +37,7 @@ interface Todo {
 
 // useReducer
 // reducer: 상태 변화 관리를 위한 함수
-function reducer(state, action) {
+function reducer(state: Todo[], action: any) {
   switch (action.type) {
     case "CREATE":
       return [action.data, ...state];
@@ -74,7 +74,7 @@ const TodoListComponent = () => {
   // useCallback
   // useCallback(콜백 함수, 의존성 배열)
 
-  const onCreate = useCallback((content) => {
+  const onCreate = useCallback((content: string) => {
     dispatch({
       type: "CREATE",
       data: {
@@ -86,14 +86,14 @@ const TodoListComponent = () => {
     });
   }, []);
 
-  const onUpdate = useCallback((targetId) => {
+  const onUpdate = useCallback((targetId: number) => {
     dispatch({
       type: "UPDATE",
       targetId: targetId,
     });
   }, []);
 
-  const onDelete = useCallback((targetId) => {
+  const onDelete = useCallback((targetId: number) => {
     dispatch({
       type: "DELETE",
       targetId: targetId,

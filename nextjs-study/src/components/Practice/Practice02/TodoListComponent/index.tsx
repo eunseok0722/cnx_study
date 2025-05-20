@@ -37,7 +37,7 @@ interface Todo {
 
 // useReducer
 // reducer: 상태 변화 관리를 위한 함수
-function reducer(state, action) {
+function reducer(state: Todo[], action: any) {
   switch (action.type) {
     case "CREATE":
       return [action.data, ...state];

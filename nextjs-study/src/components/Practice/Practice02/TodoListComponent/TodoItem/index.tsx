@@ -2,7 +2,21 @@ import styles from "./styles.module.scss";
 import {memo, useContext} from "react";
 // import {TodoContext} from "../App";
 
-const TodoItem = ({id, isDone, content, date, onUpdate, onDelete}) => {
+const TodoItem = ({
+  id,
+  isDone,
+  content,
+  date,
+  onUpdate,
+  onDelete,
+}: {
+  id: number;
+  isDone: boolean;
+  content: string;
+  date: number;
+  onUpdate: (id: number) => void;
+  onDelete: (id: number) => void;
+}) => {
   // useContext
   // const {onUpdate, onDelete} = useContext(TodoContext);
 
