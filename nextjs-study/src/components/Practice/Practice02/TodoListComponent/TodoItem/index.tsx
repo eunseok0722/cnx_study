@@ -38,11 +38,11 @@ const TodoItem = ({
   useEffect(() => {
     if (todoItemRef.current) {
       todoItemRef.current.classList.add(styles.mounted);
-      setTimeout(() => {
-        if (todoItemRef.current) {
-          todoItemRef.current.classList.remove(styles.mounted);
-        }
-      }, 500);
+      // setTimeout(() => {
+      //   if (todoItemRef.current) {
+      //     todoItemRef.current.classList.remove(styles.mounted);
+      //   }
+      // }, 500);
     }
   }, []);
 
@@ -68,6 +68,7 @@ const TodoItem = ({
   // 클린업, 정리 함수
   useEffect(() => {
     return () => {
+      isMounted.current = false;
       console.log("unmount");
     };
   }, []);

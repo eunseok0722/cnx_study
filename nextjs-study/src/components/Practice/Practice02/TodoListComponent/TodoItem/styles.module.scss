@@ -10,17 +10,15 @@
   border-bottom: 1px solid rgb(240, 240, 240);
   transition: transform 1s ease, opacity 0.25s ease;
   background-color: transparent;
-  // transform: translateY(0);
-  // opacity: 1;
 
   &.beforeMounted {
-    transform: translateY(0);
-    opacity: 1;
+    transform: translateY(10px);
+    opacity: 0;
   }
 
   &.mounted {
-    transform: translateY(10px);
-    opacity: 0;
+    transform: translateY(0);
+    opacity: 1;
   }
 
   &.rerandered {

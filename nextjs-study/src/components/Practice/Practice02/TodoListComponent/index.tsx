@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "./styles.module.scss";
-import {useState, useRef, useReducer, useCallback, createContext} from "react";
+import {useState, useRef, useReducer, useCallback, createContext, Reducer} from "react";
 import Header from "./Header/index";
 import Editor from "./Editor/index";
 import List from "./List/index";
@@ -66,42 +66,42 @@ function reducer(state: Todo[], action: TodoAction) {
 
 const TodoListComponent = () => {
   // useState
-  const [todos, setTodos] = useState(mockData);
+  // const [todos, setTodos] = useState(mockData);
+
+  // onCreate
+  // const onCreate = (content: string) => {
+  //   const newTodo = {
+  //     id: idRef.current++,
+  //     isDone: false,
+  //     content: content,
+  //     date: Date.now(),
+  //   };
+  //   setTodos([newTodo, ...todos]);
+  // };
+
+  // onUpdate
+  // const onUpdate = (targetId: number) => {
+  //   setTodos(
+  //     todos.map((todo) => {
+  //       return todo.id === targetId ? {...todo, isDone: !todo.isDone} : todo;
+  //     })
+  //   );
+  // };
+
+  // onDelete
+  // const onDelete = (targetId: number) => {
+  //   setTodos(
+  //     todos.filter((todo) => {
+  //       return todo.id !== targetId ? true : false;
+  //     })
+  //   );
+  // };
 
   // useRef
   const idRef = useRef(3);
 
-  // onCreate
-  const onCreate = (content: string) => {
-    const newTodo = {
-      id: idRef.current++,
-      isDone: false,
-      content: content,
-      date: Date.now(),
-    };
-    setTodos([newTodo, ...todos]);
-  };
-
-  // onUpdate
-  const onUpdate = (targetId: number) => {
-    setTodos(
-      todos.map((todo) => {
-        return todo.id === targetId ? {...todo, isDone: !todo.isDone} : todo;
-      })
-    );
-  };
-
-  // onDelete
-  const onDelete = (targetId: number) => {
-    setTodos(
-      todos.filter((todo) => {
-        return todo.id !== targetId ? true : false;
-      })
-    );
-  };
-
   // useReducer
-  // const [todos, dispatch] = useReducer(reducer, mockData);
+  const [todos, dispatch] = useReducer(reducer as Reducer<Todo[], TodoAction>, mockData);
 
   // dispatch
   // dispatch(액션객체)
@@ -109,31 +109,31 @@ const TodoListComponent = () => {
   // useCallback
   // useCallback(콜백 함수, 의존성 배열)
 
-  // const onCreate = useCallback((content) => {
-  //   dispatch({
-  //     type: "CREATE",
-  //     data: {
-  //       id: idRef.current++,
-  //       isDone: false,
-  //       content: content,
-  //       date: new Date().getTime(),
-  //     },
-  //   });
-  // }, []);
+  const onCreate = useCallback((content: string) => {
+    dispatch({
+      type: "CREATE",
+      data: {
+        id: idRef.current++,
+        isDone: false,
+        content: content,
+        date: new Date().getTime(),
+      },
+    });
+  }, []);
 
-  // const onUpdate = useCallback((targetId) => {
-  //   dispatch({
-  //     type: "UPDATE",
-  //     targetId: targetId,
-  //   });
-  // }, []);
+  const onUpdate = useCallback((targetId: number) => {
+    dispatch({
+      type: "UPDATE",
+      targetId: targetId,
+    });
+  }, []);
 
-  // const onDelete = useCallback((targetId) => {
-  //   dispatch({
-  //     type: "DELETE",
-  //     targetId: targetId,
-  //   });
-  // }, []);
+  const onDelete = useCallback((targetId: number) => {
+    dispatch({
+      type: "DELETE",
+      targetId: targetId,
+    });
+  }, []);
 
   return (
     <div className={styles.App}>
