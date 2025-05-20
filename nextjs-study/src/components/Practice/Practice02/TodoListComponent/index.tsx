@@ -35,9 +35,15 @@ interface Todo {
   date: number;
 }
 
+interface TodoAction {
+  type: 'CREATE' | 'UPDATE' | 'DELETE';
+  data?: Todo;
+  targetId?: number;
+}
+
 // useReducer
 // reducer: 상태 변화 관리를 위한 함수
-function reducer(state: Todo[], action: any) {
+function reducer(state: Todo[], action: TodoAction) {
   switch (action.type) {
     case "CREATE":
       return [action.data, ...state];

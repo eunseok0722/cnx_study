@@ -31,7 +31,7 @@ const Editor = ({onCreate} : {onCreate: (content: string) => void}) => {
 
   // onKeyDown
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" || e.key === "13") {
+    if (e.key === "Enter") {
       onSubmit();
     }
   };
