@@ -12,19 +12,19 @@ const mockData = [
     id: 0,
     isDone: false,
     content: "React 공부하기",
-    date: new Date().getTime(),
+    date: 1704067200000, // 2024-01-01
   },
   {
     id: 1,
     isDone: false,
     content: "빨래하기",
-    date: new Date().getTime(),
+    date: 1704153600000, // 2024-01-02
   },
   {
     id: 2,
     isDone: false,
     content: "잠자기",
-    date: new Date().getTime(),
+    date: 1704240000000, // 2024-01-03
   },
 ];
 
@@ -87,7 +87,7 @@ const TodoListComponent = () => {
         id: idRef.current++,
         isDone: false,
         content: content,
-        date: new Date().getTime(),
+        date: Date.now(),
       },
     });
   }, []);

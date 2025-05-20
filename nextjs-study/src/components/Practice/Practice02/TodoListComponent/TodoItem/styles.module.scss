@@ -1,6 +1,5 @@
 @use "public/styles/common" as *;
 
-
 .TodoItem {
   @include comp-style();
   --comp-name: "TodoItem";
@@ -9,6 +8,24 @@
   gap: 20px;
   padding-bottom: 20px;
   border-bottom: 1px solid rgb(240, 240, 240);
+  transition: transform 1s ease, opacity 0.25s ease;
+  background-color: transparent;
+  // transform: translateY(0);
+  // opacity: 1;
+
+  &.beforeMounted {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  &.mounted {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+
+  &.rerandered {
+    background-color: rgba(255, 255, 0, 0.1);
+  }
 }
 
 .TodoItem input {
