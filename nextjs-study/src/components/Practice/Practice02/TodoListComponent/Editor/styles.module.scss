@@ -1,0 +1,30 @@
+@use "public/styles/common" as *;
+
+.Editor {
+  --comp-name: "Editor";
+  @include comp-style;
+  display: flex;
+  gap: 1rem;
+}
+
+.Editor input {
+  flex: 1;
+  padding: 15px;
+  border: 1px solid rgb(220, 220, 220);
+  border-radius: 5px;
+}
+
+.Editor button {
+  cursor: pointer;
+  width: 80px;
+  border: none;
+  background-color: rgb(37, 147, 255);
+  color: white;
+  font-weight: bold;
+  border-radius: 5px;
+  flex-shrink: 0;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: rgb(27, 127, 225);
+  }
+}
