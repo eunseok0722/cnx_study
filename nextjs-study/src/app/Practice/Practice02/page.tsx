@@ -1,6 +1,5 @@
 import styles from "../practice.module.scss";
 import TodoListComponent from "@/components/Practice/Practice02/TodoListComponent";
-import TodoListComponentTobe from "@/components/Practice/Practice02/TodoListComponentTobe";
 
 export default function Practice02() {
   return (
@@ -29,7 +28,6 @@ export default function Practice02() {
         <div className={styles.practice__subtitle}>활용 실습</div>
         <div className={styles.practice__content}>
           <TodoListComponent />
-          {/* <TodoListComponentTobe /> */}
         </div>
       </div>
       {/* // body */}
