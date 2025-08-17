@@ -18,7 +18,6 @@ export default function Home() {
                 <span className="text-sm text-gray-500 font-mono">01</span>
                 <h1 className="text-3xl font-bold">Home</h1>
               </div>
-              <span className="text-sm text-gray-500">Desktop</span>
             </div>
           </div>
           
