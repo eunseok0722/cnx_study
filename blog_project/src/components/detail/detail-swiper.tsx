@@ -1,21 +1,21 @@
-'use client'
+"use client";
 
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation, Pagination } from 'swiper/modules'
-import { Button } from '@/components/ui/button'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { DetailItem } from '@/types'
+import {Swiper, SwiperSlide} from "swiper/react";
+import {Navigation, Pagination} from "swiper/modules";
+import {Button} from "@/components/ui/button";
+import {ChevronLeft, ChevronRight} from "lucide-react";
+import {DetailItem} from "@/types";
 
 interface DetailSwiperProps {
-  items: DetailItem[]
-  title: string
-  createdAt: string
-  totalCount: number
+  items: DetailItem[];
+  title: string;
+  createdAt: string;
+  totalCount: number;
 }
 
-export function DetailSwiper({ items, title, createdAt, totalCount }: DetailSwiperProps) {
+export function DetailSwiper({items, title, createdAt, totalCount}: DetailSwiperProps) {
   return (
-    <div className="pt-20 min-h-screen bg-black detail-swiper">
+    <div className="min-h-screen bg-black detail-swiper">
       {/* 정보 헤더 */}
       <div className="absolute top-20 left-0 right-0 z-10 bg-black/50 backdrop-blur-sm">
         <div className="container mx-auto px-6 py-4">
@@ -38,30 +38,28 @@ export function DetailSwiper({ items, title, createdAt, totalCount }: DetailSwip
           spaceBetween={0}
           slidesPerView={1}
           navigation={{
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
           }}
           pagination={{
-            el: '.swiper-pagination',
-            type: 'fraction',
-            formatFractionCurrent: (number) => number.toString().padStart(2, '0'),
-            formatFractionTotal: (number) => number.toString().padStart(2, '0'),
+            el: ".swiper-pagination",
+            type: "fraction",
+            formatFractionCurrent: (number) => number.toString().padStart(2, "0"),
+            formatFractionTotal: (number) => number.toString().padStart(2, "0"),
           }}
-                     onSlideChange={() => {}}
+          onSlideChange={() => {}}
           className="h-full"
         >
           {items.map((item) => (
             <SwiperSlide key={item.id}>
               <div className="relative h-full flex items-center justify-center">
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="max-w-full max-h-full object-contain"
-                />
+                <img src={item.image} alt={item.title} className="max-w-full max-h-full object-contain" />
                 {/* 아이템 정보 오버레이 */}
-                <div className="absolute bottom-0 left-0 right-0 bg-black/50 backdrop-blur-sm p-6">
-                  <h3 className="text-white text-xl font-semibold mb-2">{item.title}</h3>
-                  <p className="text-gray-300 text-sm leading-relaxed">{item.description}</p>
+                <div className="absolute bottom-0 left-0 right-0 bg-black/50 backdrop-blur-sm p-6 pb-24 md:pb-6">
+                  <div className="container mx-auto">
+                    <h3 className="text-white text-xl font-semibold mb-2">{item.title}</h3>
+                    <p className="text-gray-300 text-sm leading-relaxed">{item.description}</p>
+                  </div>
                 </div>
               </div>
             </SwiperSlide>
@@ -90,5 +88,5 @@ export function DetailSwiper({ items, title, createdAt, totalCount }: DetailSwip
         </div>
       </div>
     </div>
-  )
+  );
 }
