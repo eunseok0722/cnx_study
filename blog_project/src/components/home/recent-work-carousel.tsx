@@ -1,5 +1,6 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Pagination } from 'swiper/modules'
 import { Card, CardContent } from '@/components/ui/card'
@@ -10,6 +11,12 @@ interface RecentWorkCarouselProps {
 }
 
 export function RecentWorkCarousel({ albums }: RecentWorkCarouselProps) {
+  const router = useRouter()
+
+  const handleAlbumClick = (albumId: string) => {
+    router.push(`/photos/${albumId}`)
+  }
+
   return (
     <div className="w-full">
       <Swiper
@@ -36,7 +43,10 @@ export function RecentWorkCarousel({ albums }: RecentWorkCarouselProps) {
       >
         {albums.map((album, index) => (
           <SwiperSlide key={album.id}>
-            <Card className="overflow-hidden group cursor-pointer transition-transform duration-300 hover:scale-105">
+            <Card 
+              className="overflow-hidden group cursor-pointer transition-transform duration-300 hover:scale-105"
+              onClick={() => handleAlbumClick(album.id)}
+            >
               <CardContent className="p-0">
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <img
