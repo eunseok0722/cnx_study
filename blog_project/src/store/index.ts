@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { Album, Place, MusicAlbum, Photo, PlacePhoto, PaginationState, GalleryItem, DetailItem } from '@/types'
+import { Album, Place, MusicAlbum, PaginationState, GalleryItem, DetailItem } from '@/types'
 
 // 통합 Mock 데이터
 const mockAlbums: Album[] = [

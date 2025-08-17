@@ -41,22 +41,6 @@ export interface MusicTrack {
   albumArt: string
 }
 
-// 사진 관련 타입
-export interface Photo {
-  id: string
-  title: string
-  image: string
-  description: string
-}
-
-// 장소 사진 관련 타입
-export interface PlacePhoto {
-  id: string
-  title: string
-  image: string
-  description: string
-}
-
 // 상세페이지 아이템 타입
 export interface DetailItem {
   id: string

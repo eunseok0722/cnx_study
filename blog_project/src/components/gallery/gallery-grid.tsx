@@ -92,13 +92,7 @@ export function GalleryGrid({
             Next
           </Button>
         </div>
-        
-        {/* Next 링크 */}
-        <div className="page-nav-right">
-          <span className="next-link text-sm">
-            Next
-          </span>
-        </div>
+      
       </div>
     </div>
   )

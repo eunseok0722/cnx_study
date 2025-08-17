@@ -27,7 +27,6 @@ export default function PlacePage() {
               <span className="text-sm text-gray-500 font-mono">03</span>
               <h1 className="text-3xl font-bold">Place</h1>
             </div>
-            <span className="text-sm text-gray-500">Desktop</span>
           </div>
         </div>
 

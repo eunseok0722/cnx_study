@@ -15,7 +15,7 @@ interface DetailSwiperProps {
 
 export function DetailSwiper({ items, title, createdAt, totalCount }: DetailSwiperProps) {
   return (
-    <div className="pt-20 min-h-screen bg-black">
+    <div className="pt-20 min-h-screen bg-black detail-swiper">
       {/* 정보 헤더 */}
       <div className="absolute top-20 left-0 right-0 z-10 bg-black/50 backdrop-blur-sm">
         <div className="container mx-auto px-6 py-4">
@@ -47,7 +47,7 @@ export function DetailSwiper({ items, title, createdAt, totalCount }: DetailSwip
             formatFractionCurrent: (number) => number.toString().padStart(2, '0'),
             formatFractionTotal: (number) => number.toString().padStart(2, '0'),
           }}
-          onSlideChange={(swiper) => {}}
+                     onSlideChange={() => {}}
           className="h-full"
         >
           {items.map((item) => (

@@ -27,7 +27,6 @@ export default function PhotosPage() {
               <span className="text-sm text-gray-500 font-mono">02</span>
               <h1 className="text-3xl font-bold">Gallery</h1>
             </div>
-            <span className="text-sm text-gray-500">Desktop</span>
           </div>
         </div>
 

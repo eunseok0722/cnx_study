@@ -27,7 +27,6 @@ export default function MusicPage() {
               <span className="text-sm text-gray-500 font-mono">04</span>
               <h1 className="text-3xl font-bold">Music</h1>
             </div>
-            <span className="text-sm text-gray-500">Desktop</span>
           </div>
         </div>
 
