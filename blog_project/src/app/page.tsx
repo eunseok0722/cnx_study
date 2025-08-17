@@ -1,67 +1,72 @@
-import Link from "next/link";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Header } from '@/components/layout/header'
+import { RecentWorkCarousel } from '@/components/home/recent-work-carousel'
+
+// 임시 데이터 (나중에 API에서 가져올 예정)
+const mockAlbums = [
+  {
+    id: '1',
+    title: 'Quiet Place',
+    thumbnail: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop',
+    createdAt: '2024-01-15',
+    imageCount: 24
+  },
+  {
+    id: '2',
+    title: 'Movement',
+    thumbnail: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop',
+    createdAt: '2024-01-10',
+    imageCount: 18
+  },
+  {
+    id: '3',
+    title: 'Urban Life',
+    thumbnail: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop',
+    createdAt: '2024-01-05',
+    imageCount: 32
+  },
+  {
+    id: '4',
+    title: 'Nature Walk',
+    thumbnail: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop',
+    createdAt: '2024-01-01',
+    imageCount: 15
+  },
+  {
+    id: '5',
+    title: 'City Lights',
+    thumbnail: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop',
+    createdAt: '2023-12-28',
+    imageCount: 27
+  }
+]
 
 export default function Home() {
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold mb-4">환영합니다! 👋</h1>
-        <p className="text-xl text-muted-foreground">
-          Google Photos와 YouTube를 활용한 개인 블로그입니다
-        </p>
-      </div>
+    <>
+      <Header />
+      <div className="pt-20 min-h-screen bg-gray-50">
+        <div className="container mx-auto px-6 py-12">
+          {/* 메인 콘텐츠 */}
+          <div className="max-w-6xl mx-auto">
+            {/* RECENT WORK 섹션 */}
+            <div className="mb-12">
+              <h2 className="text-3xl font-bold mb-8 tracking-wide">RECENT WORK</h2>
+              <RecentWorkCarousel albums={mockAlbums} />
+            </div>
 
-      <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-        <Link href="/photos">
-          <Card className="hover:shadow-lg transition-shadow cursor-pointer">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                📸 사진 갤러리
-              </CardTitle>
-              <CardDescription>
-                Google Photos에서 가져온 사진들을 감상해보세요
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">
-                개인 사진들을 아름다운 갤러리 형태로 볼 수 있습니다.
-                Google Photos API를 통해 실시간으로 사진을 가져옵니다.
-              </p>
-            </CardContent>
-          </Card>
-        </Link>
-
-        <Link href="/music">
-          <Card className="hover:shadow-lg transition-shadow cursor-pointer">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                🎵 음악 플레이어
-              </CardTitle>
-              <CardDescription>
-                YouTube에서 음악을 검색하고 재생해보세요
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">
-                YouTube Data API를 활용하여 음악을 검색하고 재생할 수 있습니다.
-                좋아하는 음악을 찾아보세요!
-              </p>
-            </CardContent>
-          </Card>
-        </Link>
-      </div>
-
-      <div className="mt-16 text-center">
-        <h2 className="text-2xl font-semibold mb-4">기술 스택</h2>
-        <div className="flex flex-wrap justify-center gap-4 text-sm">
-          <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full">Next.js 14</span>
-          <span className="px-3 py-1 bg-cyan-100 text-cyan-800 rounded-full">TypeScript</span>
-          <span className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full">Tailwind CSS</span>
-          <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full">shadcn/ui</span>
-          <span className="px-3 py-1 bg-red-100 text-red-800 rounded-full">Google Photos API</span>
-          <span className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full">YouTube Data API</span>
+            {/* 하단 정보 */}
+            <div className="flex items-center justify-between text-sm text-gray-500 mt-8">
+              <div className="flex items-center space-x-4">
+                <div className="w-20 h-1 bg-gray-300 rounded-full">
+                  <div className="w-8 h-1 bg-gray-600 rounded-full"></div>
+                </div>
+                <span>Progress</span>
+              </div>
+              <span>copyright 2024</span>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  );
+    </>
+  )
 }
