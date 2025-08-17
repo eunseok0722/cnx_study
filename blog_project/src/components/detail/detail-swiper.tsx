@@ -56,10 +56,8 @@ export function DetailSwiper({items, title, createdAt, totalCount}: DetailSwiper
                 <img src={item.image} alt={item.title} className="max-w-full max-h-full object-contain" />
                 {/* 아이템 정보 오버레이 */}
                 <div className="absolute bottom-0 left-0 right-0 bg-black/50 backdrop-blur-sm p-6 pb-24 md:pb-6">
-                  <div className="container mx-auto">
-                    <h3 className="text-white text-xl font-semibold mb-2">{item.title}</h3>
-                    <p className="text-gray-300 text-sm leading-relaxed">{item.description}</p>
-                  </div>
+                  <h3 className="text-white text-xl font-semibold mb-2">{item.title}</h3>
+                  <p className="text-gray-300 text-sm leading-relaxed">{item.description}</p>
                 </div>
               </div>
             </SwiperSlide>
