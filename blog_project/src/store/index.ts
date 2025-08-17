@@ -91,90 +91,90 @@ const mockAlbums: Album[] = [
 
 const mockPlaces: Place[] = [
   {
-    id: '1',
-    title: 'Traditional Ramen House',
-    thumbnail: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400&h=300&fit=crop',
-    createdAt: 'April, 2020',
-    imageCount: 24
+    id: "1",
+    title: "Traditional Ramen House",
+    thumbnail: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400&h=300&fit=crop",
+    createdAt: "April, 2020",
+    imageCount: 24,
   },
   {
-    id: '2',
-    title: 'Kyoto Sushi Bar',
-    thumbnail: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=400&h=500&fit=crop',
-    createdAt: 'March, 2020',
-    imageCount: 18
+    id: "2",
+    title: "Kyoto Sushi Bar",
+    thumbnail: "https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=400&h=500&fit=crop",
+    createdAt: "March, 2020",
+    imageCount: 18,
   },
   {
-    id: '3',
-    title: 'Street Food Market',
-    thumbnail: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&h=400&fit=crop',
-    createdAt: 'May, 2019',
-    imageCount: 32
+    id: "3",
+    title: "Street Food Market",
+    thumbnail: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&h=400&fit=crop",
+    createdAt: "May, 2019",
+    imageCount: 32,
   },
   {
-    id: '4',
-    title: 'Cozy Coffee Shop',
-    thumbnail: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=400&h=600&fit=crop',
-    createdAt: 'July, 2019',
-    imageCount: 15
+    id: "4",
+    title: "Cozy Coffee Shop",
+    thumbnail: "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=400&h=600&fit=crop",
+    createdAt: "July, 2019",
+    imageCount: 15,
   },
   {
-    id: '5',
-    title: 'Authentic Izakaya',
-    thumbnail: 'https://images.unsplash.com/photo-1553621042-f6e147245754?w=400&h=350&fit=crop',
-    createdAt: 'June, 2019',
-    imageCount: 27
+    id: "5",
+    title: "Authentic Izakaya",
+    thumbnail: "https://images.unsplash.com/photo-1553621042-f6e147245754?w=400&h=350&fit=crop",
+    createdAt: "June, 2019",
+    imageCount: 27,
   },
   {
-    id: '6',
-    title: 'Modern Fusion Restaurant',
-    thumbnail: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=450&fit=crop',
-    createdAt: 'January, 2019',
-    imageCount: 22
+    id: "6",
+    title: "Modern Fusion Restaurant",
+    thumbnail: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=450&fit=crop",
+    createdAt: "January, 2019",
+    imageCount: 22,
   },
   {
-    id: '7',
-    title: 'Traditional Tea House',
-    thumbnail: 'https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=400&h=380&fit=crop',
-    createdAt: 'December, 2018',
-    imageCount: 19
+    id: "7",
+    title: "Traditional Tea House",
+    thumbnail: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=400&h=380&fit=crop",
+    createdAt: "December, 2018",
+    imageCount: 19,
   },
   {
-    id: '8',
-    title: 'Seafood Market',
-    thumbnail: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?w=400&h=520&fit=crop',
-    createdAt: 'November, 2018',
-    imageCount: 31
+    id: "8",
+    title: "Seafood Market",
+    thumbnail: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=400&h=520&fit=crop",
+    createdAt: "November, 2018",
+    imageCount: 31,
   },
   {
-    id: '9',
-    title: 'Artisan Bakery',
-    thumbnail: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&h=420&fit=crop',
-    createdAt: 'October, 2018',
-    imageCount: 28
+    id: "9",
+    title: "Artisan Bakery",
+    thumbnail: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&h=420&fit=crop",
+    createdAt: "October, 2018",
+    imageCount: 28,
   },
   {
-    id: '10',
-    title: 'Rooftop Dining',
-    thumbnail: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=480&fit=crop',
-    createdAt: 'September, 2018',
-    imageCount: 16
+    id: "10",
+    title: "Rooftop Dining",
+    thumbnail: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=480&fit=crop",
+    createdAt: "September, 2018",
+    imageCount: 16,
   },
   {
-    id: '11',
-    title: 'Hidden Gem Cafe',
-    thumbnail: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=400&h=550&fit=crop',
-    createdAt: 'August, 2018',
-    imageCount: 25
+    id: "11",
+    title: "Hidden Gem Cafe",
+    thumbnail: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=400&h=380&fit=crop",
+    createdAt: "August, 2018",
+    imageCount: 25,
   },
   {
-    id: '12',
-    title: 'Traditional Tempura',
-    thumbnail: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=400&fit=crop',
-    createdAt: 'July, 2018',
-    imageCount: 33
-  }
-]
+    id: "12",
+    title: "Traditional Tempura",
+    thumbnail: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=450&fit=crop",
+    createdAt: "July, 2018",
+    imageCount: 33,
+  },
+];
 
 const mockMusicAlbums: Record<string, MusicAlbum> = {
   '1': {
