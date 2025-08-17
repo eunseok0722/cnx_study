@@ -1,19 +1,23 @@
-// 앨범 관련 타입
+// 통합 아이템 타입
 export interface Album {
   id: string
   title: string
   thumbnail: string
+  category: 'photos' | 'place' | 'music'
   createdAt: string
   imageCount: number
+  description: string
 }
 
-// 장소 관련 타입
+// 장소 관련 타입 (기존 호환성을 위해 유지)
 export interface Place {
   id: string
   title: string
   thumbnail: string
+  category: 'photos' | 'place' | 'music'
   createdAt: string
   imageCount: number
+  description: string
 }
 
 // 음악 앨범 관련 타입
@@ -22,6 +26,9 @@ export interface MusicAlbum {
   title: string
   artist: string
   albumArt: string
+  category: 'photos' | 'place' | 'music'
+  createdAt: string
+  description: string
   tracks: MusicTrack[]
 }
 
@@ -50,9 +57,27 @@ export interface PlacePhoto {
   description: string
 }
 
+// 상세페이지 아이템 타입
+export interface DetailItem {
+  id: string
+  title: string
+  description: string
+  image: string
+}
+
 // 페이지네이션 관련 타입
 export interface PaginationState {
   currentPage: number
   itemsPerPage: number
   totalPages: number
+}
+
+// 갤러리 아이템 공통 타입
+export interface GalleryItem {
+  id: string
+  title: string
+  thumbnail: string
+  subtitle?: string // artist for music, createdAt for others
+  category: 'photos' | 'place' | 'music'
+  createdAt: string
 }

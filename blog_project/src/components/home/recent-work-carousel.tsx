@@ -4,17 +4,33 @@ import { useRouter } from 'next/navigation'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Pagination } from 'swiper/modules'
 import { Card, CardContent } from '@/components/ui/card'
-import { Album } from '@/types'
+interface RecentWorkItem {
+  id: string
+  title: string
+  thumbnail: string
+  category: 'photos' | 'place' | 'music'
+  createdAt: string
+}
 
 interface RecentWorkCarouselProps {
-  albums: Album[]
+  albums: RecentWorkItem[]
 }
 
 export function RecentWorkCarousel({ albums }: RecentWorkCarouselProps) {
   const router = useRouter()
 
-  const handleAlbumClick = (albumId: string) => {
-    router.push(`/photos/${albumId}`)
+  const handleAlbumClick = (album: RecentWorkItem) => {
+    switch (album.category) {
+      case 'photos':
+        router.push(`/photos/${album.id}`)
+        break
+      case 'place':
+        router.push(`/place/${album.id}`)
+        break
+      case 'music':
+        router.push(`/music/${album.id}`)
+        break
+    }
   }
 
   return (
@@ -45,7 +61,7 @@ export function RecentWorkCarousel({ albums }: RecentWorkCarouselProps) {
           <SwiperSlide key={album.id}>
             <Card 
               className="overflow-hidden group cursor-pointer transition-transform duration-300 hover:scale-105"
-              onClick={() => handleAlbumClick(album.id)}
+              onClick={() => handleAlbumClick(album)}
             >
               <CardContent className="p-0">
                 <div className="relative aspect-[4/3] overflow-hidden">
@@ -62,7 +78,7 @@ export function RecentWorkCarousel({ albums }: RecentWorkCarouselProps) {
                       /{(index + 1).toString().padStart(2, '0')}
                     </span>
                     <span className="text-sm text-gray-500">
-                      {album.imageCount} photos
+                      {album.category}
                     </span>
                   </div>
                   <h3 className="text-lg font-medium mb-1">{album.title}</h3>
