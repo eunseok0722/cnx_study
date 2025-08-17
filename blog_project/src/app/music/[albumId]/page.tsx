@@ -1,50 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useParams } from 'next/navigation'
 import { Header } from '@/components/layout/header'
 import { Button } from '@/components/ui/button'
 import { Play, Pause, SkipBack, SkipForward, Volume2 } from 'lucide-react'
-
-// 임시 데이터 (앨범별 음악 정보)
-const mockMusicAlbums = {
-  '1': {
-    id: '1',
-    title: 'Midnight Jazz Collection',
-    artist: 'Jazz Ensemble',
-    albumArt: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&h=800&fit=crop',
-    tracks: [
-      { id: '1-1', title: 'Midnight Blues', artist: 'Jazz Ensemble', duration: '4:32' },
-      { id: '1-2', title: 'Smooth Sailing', artist: 'Jazz Ensemble', duration: '3:45' },
-      { id: '1-3', title: 'Late Night Groove', artist: 'Jazz Ensemble', duration: '5:12' },
-      { id: '1-4', title: 'Urban Jazz', artist: 'Jazz Ensemble', duration: '4:18' },
-      { id: '1-5', title: 'Moonlight Serenade', artist: 'Jazz Ensemble', duration: '6:24' }
-    ]
-  },
-  '2': {
-    id: '2',
-    title: 'Classical Piano Sonatas',
-    artist: 'Maria Schmidt',
-    albumArt: 'https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?w=800&h=800&fit=crop',
-    tracks: [
-      { id: '2-1', title: 'Sonata No. 1 in C Major', artist: 'Maria Schmidt', duration: '8:45' },
-      { id: '2-2', title: 'Sonata No. 2 in A Minor', artist: 'Maria Schmidt', duration: '7:32' },
-      { id: '2-3', title: 'Sonata No. 3 in G Major', artist: 'Maria Schmidt', duration: '9:18' }
-    ]
-  },
-  '3': {
-    id: '3',
-    title: 'Indie Folk Stories',
-    artist: 'The Wanderers',
-    albumArt: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&h=800&fit=crop',
-    tracks: [
-      { id: '3-1', title: 'Road Less Traveled', artist: 'The Wanderers', duration: '3:56' },
-      { id: '3-2', title: 'Mountain Echo', artist: 'The Wanderers', duration: '4:23' },
-      { id: '3-3', title: 'River Song', artist: 'The Wanderers', duration: '5:11' },
-      { id: '3-4', title: 'Forest Whispers', artist: 'The Wanderers', duration: '4:47' }
-    ]
-  }
-}
+import { useAppStore } from '@/store'
 
 export default function MusicDetailPage() {
   const params = useParams()
@@ -52,7 +13,8 @@ export default function MusicDetailPage() {
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
   
-  const album = mockMusicAlbums[albumId as keyof typeof mockMusicAlbums]
+  const { getMusicAlbumById } = useAppStore()
+  const album = getMusicAlbumById(albumId)
   const currentTrack = album?.tracks[currentTrackIndex]
 
   if (!album || !currentTrack) {
@@ -104,24 +66,24 @@ export default function MusicDetailPage() {
                   {(currentTrackIndex + 1).toString().padStart(2, '0')} / {album.tracks.length.toString().padStart(2, '0')}
                 </div>
                 
-                {/* 앨범아트 */}
-                <div className="relative">
-                  <img
-                    src={album.albumArt}
-                    alt={album.title}
-                    className="w-80 h-80 lg:w-96 lg:h-96 object-cover rounded-lg shadow-2xl"
-                  />
-                  {/* 재생 오버레이 */}
-                  <div className="absolute inset-0 bg-black/20 rounded-lg flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
-                    <Button
-                      size="icon"
-                      className="w-16 h-16 bg-white/90 text-black hover:bg-white"
-                      onClick={handlePlayPause}
-                    >
-                      {isPlaying ? <Pause className="w-8 h-8" /> : <Play className="w-8 h-8" />}
-                    </Button>
-                  </div>
-                </div>
+                                 {/* 앨범아트 */}
+                 <div className="relative">
+                   <img
+                     src={currentTrack.albumArt}
+                     alt={currentTrack.title}
+                     className="w-80 h-80 lg:w-96 lg:h-96 object-cover rounded-lg shadow-2xl"
+                   />
+                   {/* 재생 오버레이 */}
+                   <div className="absolute inset-0 bg-black/20 rounded-lg flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                     <Button
+                       size="icon"
+                       className="w-16 h-16 bg-white/90 text-black hover:bg-white"
+                       onClick={handlePlayPause}
+                     >
+                       {isPlaying ? <Pause className="w-8 h-8" /> : <Play className="w-8 h-8" />}
+                     </Button>
+                   </div>
+                 </div>
                 
                 {/* 음악 정보 */}
                 <div className="text-center lg:text-left">
@@ -193,34 +155,34 @@ export default function MusicDetailPage() {
                 </p>
               </div>
               
-              {/* 앨범아트 썸네일들 */}
-              <div className="flex justify-center">
-                <div className="grid grid-cols-5 md:grid-cols-10 gap-4 max-w-4xl">
-                  {album.tracks.slice(0, 10).map((track, index) => (
-                    <div
-                      key={track.id}
-                      className={`relative cursor-pointer transition-transform hover:scale-105 ${
-                        index === currentTrackIndex ? 'ring-2 ring-white' : ''
-                      }`}
-                      onClick={() => handleTrackSelect(index)}
-                    >
-                      <img
-                        src={album.albumArt}
-                        alt={track.title}
-                        className="w-16 h-16 object-cover rounded-lg"
-                      />
-                      <div className="absolute -top-2 -right-2 w-6 h-6 bg-white text-black text-xs rounded-full flex items-center justify-center font-bold">
-                        {(index + 1).toString().padStart(2, '0')}
-                      </div>
-                      {index === currentTrackIndex && (
-                        <div className="absolute inset-0 bg-black/20 rounded-lg flex items-center justify-center">
-                          <div className="w-4 h-4 bg-white rounded-full"></div>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
+                             {/* 앨범아트 썸네일들 */}
+               <div className="flex justify-center">
+                 <div className="grid grid-cols-5 md:grid-cols-10 gap-4 max-w-4xl">
+                   {album.tracks.slice(0, 10).map((track, index) => (
+                     <div
+                       key={track.id}
+                       className={`relative cursor-pointer transition-transform hover:scale-105 ${
+                         index === currentTrackIndex ? 'ring-2 ring-white' : ''
+                       }`}
+                       onClick={() => handleTrackSelect(index)}
+                     >
+                       <img
+                         src={track.albumArt}
+                         alt={track.title}
+                         className="w-16 h-16 object-cover rounded-lg"
+                       />
+                       <div className="absolute -top-2 -right-2 w-6 h-6 bg-white text-black text-xs rounded-full flex items-center justify-center font-bold">
+                         {(index + 1).toString().padStart(2, '0')}
+                       </div>
+                       {index === currentTrackIndex && (
+                         <div className="absolute inset-0 bg-black/20 rounded-lg flex items-center justify-center">
+                           <div className="w-4 h-4 bg-white rounded-full"></div>
+                         </div>
+                       )}
+                     </div>
+                   ))}
+                 </div>
+               </div>
             </div>
           </div>
         </div>

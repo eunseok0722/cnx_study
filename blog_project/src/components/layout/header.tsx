@@ -7,7 +7,7 @@ export function Header() {
   const pathname = usePathname()
 
   const navItems = [
-    { href: '/photos', label: 'Photos' },
+    { href: '/photos', label: 'Gallery' },
     { href: '/place', label: 'Place' },
     { href: '/music', label: 'Music' }
   ]
@@ -17,11 +17,11 @@ export function Header() {
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* 로고 */}
-          <Link href="/" className="flex items-center space-x-2">
+          <Link href="/" className="flex items-center space-x-3">
             <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center">
-              <span className="text-white font-bold text-lg">B</span>
+              <span className="text-white font-bold text-lg">T</span>
             </div>
-            <span className="text-xl font-bold">Blog</span>
+            <span className="text-xl font-bold text-gray-900">TSUYOSHI HASEGAWA</span>
           </Link>
 
           {/* GNB */}

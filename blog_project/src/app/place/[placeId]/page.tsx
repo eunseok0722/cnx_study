@@ -1,118 +1,21 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useParams } from 'next/navigation'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Pagination } from 'swiper/modules'
 import { Header } from '@/components/layout/header'
 import { Button } from '@/components/ui/button'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-
-// 임시 데이터 (장소별 음식 사진들)
-const mockPlacePhotos = {
-  '1': [
-    {
-      id: '1-1',
-      title: 'Traditional Ramen House',
-      image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=1200&h=800&fit=crop',
-      description: 'Authentic ramen with rich broth and fresh ingredients'
-    },
-    {
-      id: '1-2',
-      title: 'Ramen preparation',
-      image: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=1200&h=800&fit=crop',
-      description: 'Chef carefully preparing the perfect bowl of ramen'
-    },
-    {
-      id: '1-3',
-      title: 'Ramen ingredients',
-      image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=1200&h=800&fit=crop',
-      description: 'Fresh vegetables and premium noodles'
-    },
-    {
-      id: '1-4',
-      title: 'Ramen serving',
-      image: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=1200&h=800&fit=crop',
-      description: 'Steaming hot ramen ready to be enjoyed'
-    },
-    {
-      id: '1-5',
-      title: 'Ramen interior',
-      image: 'https://images.unsplash.com/photo-1553621042-f6e147245754?w=1200&h=800&fit=crop',
-      description: 'Cozy traditional ramen house atmosphere'
-    }
-  ],
-  '2': [
-    {
-      id: '2-1',
-      title: 'Kyoto Sushi Bar',
-      image: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=1200&h=800&fit=crop',
-      description: 'Premium sushi prepared by master chef'
-    },
-    {
-      id: '2-2',
-      title: 'Sushi preparation',
-      image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=1200&h=800&fit=crop',
-      description: 'Artistic sushi making process'
-    },
-    {
-      id: '2-3',
-      title: 'Sushi presentation',
-      image: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=1200&h=800&fit=crop',
-      description: 'Beautifully arranged sushi platter'
-    }
-  ],
-  '3': [
-    {
-      id: '3-1',
-      title: 'Street Food Market',
-      image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=1200&h=800&fit=crop',
-      description: 'Bustling street food market with various vendors'
-    },
-    {
-      id: '3-2',
-      title: 'Takoyaki stand',
-      image: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=1200&h=800&fit=crop',
-      description: 'Fresh takoyaki being made on the spot'
-    },
-    {
-      id: '3-3',
-      title: 'Street food variety',
-      image: 'https://images.unsplash.com/photo-1553621042-f6e147245754?w=1200&h=800&fit=crop',
-      description: 'Colorful array of street food options'
-    }
-  ]
-}
-
-// 장소 정보
-const mockPlaces = {
-  '1': {
-    id: '1',
-    title: 'Traditional Ramen House',
-    createdAt: 'April, 2020',
-    imageCount: 5
-  },
-  '2': {
-    id: '2',
-    title: 'Kyoto Sushi Bar',
-    createdAt: 'March, 2020',
-    imageCount: 3
-  },
-  '3': {
-    id: '3',
-    title: 'Street Food Market',
-    createdAt: 'May, 2019',
-    imageCount: 3
-  }
-}
+import { useAppStore } from '@/store'
 
 export default function PlaceDetailPage() {
   const params = useParams()
   const placeId = params.placeId as string
-  const [activeIndex, setActiveIndex] = useState(0)
   
-  const place = mockPlaces[placeId as keyof typeof mockPlaces]
-  const photos = mockPlacePhotos[placeId as keyof typeof mockPlacePhotos] || []
+  const { getPlaceById, getPlacePhotos } = useAppStore()
+  const place = getPlaceById(placeId)
+  const photos = getPlacePhotos(placeId)
 
   if (!place || !photos.length) {
     return (
@@ -163,7 +66,7 @@ export default function PlaceDetailPage() {
               formatFractionCurrent: (number) => number.toString().padStart(2, '0'),
               formatFractionTotal: (number) => number.toString().padStart(2, '0'),
             }}
-            onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
+                         onSlideChange={(swiper) => {}}
             className="h-full"
           >
             {photos.map((photo) => (

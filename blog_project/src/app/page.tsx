@@ -1,46 +1,12 @@
+'use client'
+
 import { Header } from '@/components/layout/header'
 import { RecentWorkCarousel } from '@/components/home/recent-work-carousel'
-
-// 임시 데이터 (나중에 API에서 가져올 예정)
-const mockAlbums = [
-  {
-    id: '1',
-    title: 'Quiet Place',
-    thumbnail: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop',
-    createdAt: '2024-01-15',
-    imageCount: 24
-  },
-  {
-    id: '2',
-    title: 'Movement',
-    thumbnail: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop',
-    createdAt: '2024-01-10',
-    imageCount: 18
-  },
-  {
-    id: '3',
-    title: 'Urban Life',
-    thumbnail: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop',
-    createdAt: '2024-01-05',
-    imageCount: 32
-  },
-  {
-    id: '4',
-    title: 'Nature Walk',
-    thumbnail: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop',
-    createdAt: '2024-01-01',
-    imageCount: 15
-  },
-  {
-    id: '5',
-    title: 'City Lights',
-    thumbnail: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop',
-    createdAt: '2023-12-28',
-    imageCount: 27
-  }
-]
+import { useAppStore } from '@/store'
 
 export default function Home() {
+  const { albums } = useAppStore()
+  
   return (
     <>
       <Header />
@@ -48,10 +14,21 @@ export default function Home() {
         <div className="container mx-auto px-6 py-12">
           {/* 메인 콘텐츠 */}
           <div className="max-w-6xl mx-auto">
+            {/* 페이지 헤더 */}
+            <div className="mb-12">
+              <div className="flex items-center justify-between mb-8">
+                <div className="flex items-center space-x-4">
+                  <span className="text-sm text-gray-500 font-mono">01</span>
+                  <h1 className="text-3xl font-bold">Home</h1>
+                </div>
+                <span className="text-sm text-gray-500">Desktop</span>
+              </div>
+            </div>
+            
             {/* RECENT WORK 섹션 */}
             <div className="mb-12">
               <h2 className="text-3xl font-bold mb-8 tracking-wide">RECENT WORK</h2>
-              <RecentWorkCarousel albums={mockAlbums} />
+              <RecentWorkCarousel albums={albums.slice(0, 5)} />
             </div>
 
             {/* 하단 정보 */}

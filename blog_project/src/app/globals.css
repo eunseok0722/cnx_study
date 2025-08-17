@@ -134,12 +134,13 @@
 }
 
 .recent-work-swiper .swiper-slide {
-  text-align: center;
+  text-align: left;
   font-size: 18px;
   background: transparent;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 
 .recent-work-swiper .swiper-slide img {
@@ -229,12 +230,25 @@ header {
 
 /* Gallery Page Specific Styles */
 .gallery-grid {
-  column-gap: 1.5rem;
+  column-gap: 2rem;
 }
 
 .gallery-item {
   break-inside: avoid;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+/* Card Styles */
+.gallery-item .card {
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+}
+
+.gallery-item .card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
 /* Page Navigation Styles */

@@ -1,119 +1,31 @@
 'use client'
 
-import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Header } from '@/components/layout/header'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-
-// 임시 데이터 (나중에 API에서 가져올 예정)
-const mockAlbums = [
-  {
-    id: '1',
-    title: 'Morning station',
-    thumbnail: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop',
-    createdAt: 'April, 2020',
-    imageCount: 24
-  },
-  {
-    id: '2',
-    title: 'Kyoto fashion snap',
-    thumbnail: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=500&fit=crop',
-    createdAt: 'March, 2020',
-    imageCount: 18
-  },
-  {
-    id: '3',
-    title: 'Everyday life in Kyoto',
-    thumbnail: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=400&h=400&fit=crop',
-    createdAt: 'May, 2019',
-    imageCount: 32
-  },
-  {
-    id: '4',
-    title: 'Kyoto life',
-    thumbnail: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=600&fit=crop',
-    createdAt: 'July, 2019',
-    imageCount: 15
-  },
-  {
-    id: '5',
-    title: 'Today',
-    thumbnail: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=350&fit=crop',
-    createdAt: 'June, 2019',
-    imageCount: 27
-  },
-  {
-    id: '6',
-    title: 'The relationship between you and me',
-    thumbnail: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=400&h=450&fit=crop',
-    createdAt: 'January, 2019',
-    imageCount: 22
-  },
-  {
-    id: '7',
-    title: 'Urban exploration',
-    thumbnail: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=380&fit=crop',
-    createdAt: 'December, 2018',
-    imageCount: 19
-  },
-  {
-    id: '8',
-    title: 'Street photography',
-    thumbnail: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=520&fit=crop',
-    createdAt: 'November, 2018',
-    imageCount: 31
-  },
-  {
-    id: '9',
-    title: 'City lights',
-    thumbnail: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=400&h=420&fit=crop',
-    createdAt: 'October, 2018',
-    imageCount: 28
-  },
-  {
-    id: '10',
-    title: 'Nature walk',
-    thumbnail: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=480&fit=crop',
-    createdAt: 'September, 2018',
-    imageCount: 16
-  },
-  {
-    id: '11',
-    title: 'Portrait series',
-    thumbnail: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=550&fit=crop',
-    createdAt: 'August, 2018',
-    imageCount: 25
-  },
-  {
-    id: '12',
-    title: 'Architecture',
-    thumbnail: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=400&h=400&fit=crop',
-    createdAt: 'July, 2018',
-    imageCount: 33
-  }
-]
-
-const ITEMS_PER_PAGE = 9
+import { useAppStore } from '@/store'
 
 export default function PhotosPage() {
   const router = useRouter()
-  const [currentPage, setCurrentPage] = useState(1)
+  const { 
+    getCurrentPhotos, 
+    photosPagination, 
+    setPhotosPagination 
+  } = useAppStore()
   
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
-  const endIndex = startIndex + ITEMS_PER_PAGE
-  const currentAlbums = mockAlbums.slice(startIndex, endIndex)
-  const totalPages = Math.ceil(mockAlbums.length / ITEMS_PER_PAGE)
+  const currentAlbums = getCurrentPhotos()
+  const { currentPage, totalPages } = photosPagination
   
   const handleNext = () => {
     if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1)
+      setPhotosPagination({ currentPage: currentPage + 1 })
     }
   }
   
   const handlePrev = () => {
     if (currentPage > 1) {
-      setCurrentPage(currentPage - 1)
+      setPhotosPagination({ currentPage: currentPage - 1 })
     }
   }
 
@@ -130,8 +42,8 @@ export default function PhotosPage() {
           <div className="max-w-6xl mx-auto mb-12">
             <div className="flex items-center justify-between mb-8">
               <div className="flex items-center space-x-4">
-                <span className="text-sm text-gray-500 font-mono">06</span>
-                <h1 className="text-3xl font-bold">Gallery</h1>
+                                 <span className="text-sm text-gray-500 font-mono">02</span>
+                 <h1 className="text-3xl font-bold">Gallery</h1>
               </div>
               <span className="text-sm text-gray-500">Desktop</span>
             </div>

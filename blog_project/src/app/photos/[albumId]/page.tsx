@@ -1,92 +1,21 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useParams } from 'next/navigation'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Pagination } from 'swiper/modules'
 import { Header } from '@/components/layout/header'
 import { Button } from '@/components/ui/button'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-
-// 임시 데이터 (앨범별 사진들)
-const mockAlbumPhotos = {
-  '1': [
-    {
-      id: '1-1',
-      title: 'Morning station',
-      image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=800&fit=crop',
-      description: 'Early morning at the train station'
-    },
-    {
-      id: '1-2',
-      title: 'Platform view',
-      image: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1200&h=800&fit=crop',
-      description: 'People waiting on the platform'
-    },
-    {
-      id: '1-3',
-      title: 'Train arrival',
-      image: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1200&h=800&fit=crop',
-      description: 'The train pulling into the station'
-    },
-    {
-      id: '1-4',
-      title: 'Departure',
-      image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=800&fit=crop',
-      description: 'Train leaving the station'
-    },
-    {
-      id: '1-5',
-      title: 'Station architecture',
-      image: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1200&h=800&fit=crop',
-      description: 'Beautiful station design'
-    }
-  ],
-  '2': [
-    {
-      id: '2-1',
-      title: 'Kyoto fashion snap',
-      image: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1200&h=800&fit=crop',
-      description: 'Street fashion in Kyoto'
-    },
-    {
-      id: '2-2',
-      title: 'Traditional kimono',
-      image: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1200&h=800&fit=crop',
-      description: 'Beautiful traditional attire'
-    },
-    {
-      id: '2-3',
-      title: 'Modern street style',
-      image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=800&fit=crop',
-      description: 'Contemporary fashion trends'
-    }
-  ]
-}
-
-// 앨범 정보
-const mockAlbums = {
-  '1': {
-    id: '1',
-    title: 'Morning station',
-    createdAt: 'April, 2020',
-    imageCount: 5
-  },
-  '2': {
-    id: '2',
-    title: 'Kyoto fashion snap',
-    createdAt: 'March, 2020',
-    imageCount: 3
-  }
-}
+import { useAppStore } from '@/store'
 
 export default function AlbumDetailPage() {
   const params = useParams()
   const albumId = params.albumId as string
-  const [activeIndex, setActiveIndex] = useState(0)
   
-  const album = mockAlbums[albumId as keyof typeof mockAlbums]
-  const photos = mockAlbumPhotos[albumId as keyof typeof mockAlbumPhotos] || []
+  const { getAlbumById, getAlbumPhotos } = useAppStore()
+  const album = getAlbumById(albumId)
+  const photos = getAlbumPhotos(albumId)
 
   if (!album || !photos.length) {
     return (
@@ -137,7 +66,7 @@ export default function AlbumDetailPage() {
               formatFractionCurrent: (number) => number.toString().padStart(2, '0'),
               formatFractionTotal: (number) => number.toString().padStart(2, '0'),
             }}
-            onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
+                         onSlideChange={(swiper) => {}}
             className="h-full"
           >
             {photos.map((photo) => (

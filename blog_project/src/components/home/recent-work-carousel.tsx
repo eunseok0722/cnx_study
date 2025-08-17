@@ -3,14 +3,7 @@
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Pagination } from 'swiper/modules'
 import { Card, CardContent } from '@/components/ui/card'
-
-interface Album {
-  id: string
-  title: string
-  thumbnail: string
-  createdAt: string
-  imageCount: number
-}
+import { Album } from '@/types'
 
 interface RecentWorkCarouselProps {
   albums: Album[]
