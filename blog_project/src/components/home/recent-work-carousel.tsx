@@ -20,15 +20,18 @@ export function RecentWorkCarousel({ albums }: RecentWorkCarouselProps) {
   const router = useRouter()
 
   const handleAlbumClick = (album: RecentWorkItem) => {
+    // ID에서 카테고리 접두사 제거하여 실제 ID 추출
+    const actualId = album.id.replace(`${album.category}-`, '')
+    
     switch (album.category) {
       case 'photos':
-        router.push(`/photos/${album.id}`)
+        router.push(`/photos/${actualId}`)
         break
       case 'place':
-        router.push(`/place/${album.id}`)
+        router.push(`/place/${actualId}`)
         break
       case 'music':
-        router.push(`/music/${album.id}`)
+        router.push(`/music/${actualId}`)
         break
     }
   }

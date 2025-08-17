@@ -784,7 +784,7 @@ const createRecentWorkData = () => {
   const allItems = [
     // Photos 데이터
     ...mockAlbums.map(album => ({
-      id: album.id,
+      id: `photos-${album.id}`,
       title: album.title,
       thumbnail: album.thumbnail,
       category: album.category,
@@ -792,7 +792,7 @@ const createRecentWorkData = () => {
     })),
     // Places 데이터
     ...mockPlaces.map(place => ({
-      id: place.id,
+      id: `place-${place.id}`,
       title: place.title,
       thumbnail: place.thumbnail,
       category: place.category,
@@ -800,7 +800,7 @@ const createRecentWorkData = () => {
     })),
     // Music 데이터
     ...Object.values(mockMusicAlbums).map(album => ({
-      id: album.id,
+      id: `music-${album.id}`,
       title: album.title,
       thumbnail: album.albumArt,
       category: album.category,
