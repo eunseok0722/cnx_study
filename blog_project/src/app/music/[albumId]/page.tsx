@@ -106,7 +106,7 @@ export default function MusicDetailPage() {
                   <Button
                     variant="outline"
                     size="icon"
-                    className="w-12 h-12 border-white/30 text-white hover:bg-white/10"
+                    className="w-12 h-12 border-white/30 hover:bg-white/10"
                     onClick={handlePrevious}
                   >
                     <SkipBack className="w-6 h-6" />
@@ -123,7 +123,7 @@ export default function MusicDetailPage() {
                   <Button
                     variant="outline"
                     size="icon"
-                    className="w-12 h-12 border-white/30 text-white hover:bg-white/10"
+                    className="w-12 h-12 border-white/30 hover:bg-white/10"
                     onClick={handleNext}
                   >
                     <SkipForward className="w-6 h-6" />
