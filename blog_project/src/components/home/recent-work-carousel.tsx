@@ -8,7 +8,7 @@ interface RecentWorkItem {
   id: string
   title: string
   thumbnail: string
-  category: 'photos' | 'place' | 'music'
+  category: 'photos' | 'place' | 'youtube'
   createdAt: string
 }
 
@@ -30,8 +30,8 @@ export function RecentWorkCarousel({ albums }: RecentWorkCarouselProps) {
       case 'place':
         router.push(`/place/${actualId}`)
         break
-      case 'music':
-        router.push(`/music/${actualId}`)
+      case 'youtube':
+        router.push(`/interests/${actualId}`)
         break
     }
   }

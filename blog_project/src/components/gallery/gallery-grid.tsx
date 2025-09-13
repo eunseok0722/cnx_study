@@ -10,7 +10,7 @@ interface GalleryGridProps {
   currentPage: number
   totalPages: number
   onPageChange: (page: number) => void
-  category: 'photos' | 'place' | 'music'
+  category: 'photos' | 'place' | 'youtube'
 }
 
 export function GalleryGrid({ 
@@ -35,7 +35,14 @@ export function GalleryGrid({
   }
 
   const handleItemClick = (itemId: string) => {
-    router.push(`/${category}/${itemId}`)
+    // ID에서 카테고리 접두사 제거하여 실제 ID 추출
+    const actualId = itemId.replace(`${category}-`, '')
+    
+    if (category === 'youtube') {
+      router.push(`/interests/${actualId}`)
+    } else {
+      router.push(`/${category}/${actualId}`)
+    }
   }
 
   return (

@@ -3,7 +3,7 @@ export interface Album {
   id: string
   title: string
   thumbnail: string
-  category: 'photos' | 'place' | 'music'
+  category: 'photos' | 'place'
   createdAt: string
   imageCount: number
   description: string
@@ -14,32 +14,12 @@ export interface Place {
   id: string
   title: string
   thumbnail: string
-  category: 'photos' | 'place' | 'music'
+  category: 'photos' | 'place'
   createdAt: string
   imageCount: number
   description: string
 }
 
-// 음악 앨범 관련 타입
-export interface MusicAlbum {
-  id: string
-  title: string
-  artist: string
-  albumArt: string
-  category: 'photos' | 'place' | 'music'
-  createdAt: string
-  description: string
-  tracks: MusicTrack[]
-}
-
-// 음악 트랙 관련 타입
-export interface MusicTrack {
-  id: string
-  title: string
-  artist: string
-  duration: string
-  albumArt: string
-}
 
 // 상세페이지 아이템 타입
 export interface DetailItem {
@@ -62,6 +42,62 @@ export interface GalleryItem {
   title: string
   thumbnail: string
   subtitle?: string // artist for music, createdAt for others
-  category: 'photos' | 'place' | 'music'
+  category: 'photos' | 'place' | 'youtube'
   createdAt: string
+}
+
+// YouTube API 관련 타입
+export interface YouTubePlaylist {
+  id: string
+  title: string
+  description: string
+  thumbnail: string
+  itemCount: number
+  publishedAt: string
+  channelTitle: string
+}
+
+export interface YouTubeVideo {
+  id: string
+  title: string
+  description: string
+  thumbnail: string
+  duration: string
+  publishedAt: string
+  channelTitle: string
+  videoId: string
+}
+
+export interface YouTubePlaylistItem {
+  id: string
+  playlistId: string
+  video: YouTubeVideo
+  position: number
+}
+
+// YouTube API 응답 타입
+export interface YouTubeApiResponse<T> {
+  items: T[]
+  nextPageToken?: string
+  pageInfo: {
+    totalResults: number
+    resultsPerPage: number
+  }
+}
+
+// YouTube Player 관련 타입
+export interface YouTubePlayerState {
+  isPlaying: boolean
+  currentVideoId: string | null
+  currentVideoIndex: number
+  volume: number
+  duration: number
+  currentTime: number
+}
+
+export interface YouTubePlayerEvents {
+  onStateChange?: (event: any) => void
+  onPlaybackQualityChange?: (event: any) => void
+  onPlaybackRateChange?: (event: any) => void
+  onError?: (event: any) => void
 }

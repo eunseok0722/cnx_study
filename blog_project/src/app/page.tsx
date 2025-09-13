@@ -1,10 +1,16 @@
 'use client'
 
+import { useEffect } from 'react'
 import { RecentWorkCarousel } from '@/components/home/recent-work-carousel'
 import { useAppStore } from '@/store'
 
 export default function Home() {
-  const { recentWork } = useAppStore()
+  const { recentWork, fetchYouTubePlaylists } = useAppStore()
+  
+  // 컴포넌트 마운트 시 YouTube 재생목록 가져오기
+  useEffect(() => {
+    fetchYouTubePlaylists()
+  }, [fetchYouTubePlaylists])
   
   return (
     <div className="pt-20 min-h-screen bg-gray-50">

@@ -10,7 +10,7 @@ export function Header() {
   const navItems = [
     {href: "/photos", label: "Photos"},
     {href: "/place", label: "Place"},
-    {href: "/music", label: "Music"},
+    {href: "/interests", label: "Interests"},
   ];
 
   return (
@@ -19,7 +19,13 @@ export function Header() {
         <div className="flex items-center justify-between w-full">
           {/* 로고 */}
           <Link href="/" className="flex items-center space-x-3">
-            <Image src="/img_logo001.svg" alt="MONERE" width={160} height={32} />
+            <Image 
+              src="/img_logo001.svg" 
+              alt="MONERE" 
+              width={160} 
+              height={32}
+              className="h-6 md:h-8 w-auto"
+            />
           </Link>
 
           {/* GNB */}

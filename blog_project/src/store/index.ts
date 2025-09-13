@@ -1,5 +1,6 @@
 import { create } from 'zustand'
-import { Album, Place, MusicAlbum, PaginationState, GalleryItem, DetailItem } from '@/types'
+import { Album, Place, PaginationState, GalleryItem, DetailItem, YouTubePlaylist, YouTubeVideo, YouTubePlaylistItem } from '@/types'
+import { fetchPlaylists, fetchPlaylistWithVideos, YouTubeApiError } from '@/lib/youtube-api'
 
 // 통합 Mock 데이터
 const mockAlbums: Album[] = [
@@ -780,7 +781,7 @@ const mockMusicAlbums: Record<string, MusicAlbum> = {
 };
 
 // 통합된 최신 작업 데이터 생성
-const createRecentWorkData = () => {
+const createRecentWorkData = (youtubePlaylists: any[] = []) => {
   const allItems = [
     // Photos 데이터
     ...mockAlbums.map(album => ({
@@ -798,13 +799,13 @@ const createRecentWorkData = () => {
       category: place.category,
       createdAt: place.createdAt
     })),
-    // Music 데이터
-    ...Object.values(mockMusicAlbums).map(album => ({
-      id: `music-${album.id}`,
-      title: album.title,
-      thumbnail: album.albumArt,
-      category: album.category,
-      createdAt: album.createdAt
+    // YouTube 데이터
+    ...youtubePlaylists.map(playlist => ({
+      id: `youtube-${playlist.id}`,
+      title: playlist.title,
+      thumbnail: playlist.thumbnail,
+      category: 'youtube' as const,
+      createdAt: playlist.publishedAt
     }))
   ];
 
@@ -817,7 +818,12 @@ interface AppStore {
   // 기존 데이터
   albums: Album[]
   places: Place[]
-  musicAlbums: Record<string, MusicAlbum>
+  
+  // YouTube 데이터
+  youtubePlaylists: YouTubePlaylist[]
+  youtubePlaylistVideos: Record<string, YouTubeVideo[]>
+  youtubeLoading: boolean
+  youtubeError: string | null
   
   // 통합된 최신 작업 데이터
   recentWork: ReturnType<typeof createRecentWorkData>
@@ -825,21 +831,27 @@ interface AppStore {
   // 페이지네이션 상태
   photosPagination: PaginationState
   placesPagination: PaginationState
-  musicPagination: PaginationState
+  youtubePagination: PaginationState
   
   // 액션들
   getCurrentAlbums: () => Album[]
   getCurrentPlaces: () => Place[]
-  getCurrentMusicAlbums: () => MusicAlbum[]
-  getCurrentGalleryItems: (category: 'photos' | 'place' | 'music') => GalleryItem[]
-  getMusicAlbumById: (id: string) => MusicAlbum | null
+  getCurrentGalleryItems: (category: 'photos' | 'place' | 'youtube') => GalleryItem[]
   getAlbumById: (id: string) => Album | null
   getPlaceById: (id: string) => Place | null
   getAlbumPhotos: (albumId: string) => DetailItem[]
   getPlacePhotos: (placeId: string) => DetailItem[]
+  
+  // YouTube 액션들
+  fetchYouTubePlaylists: () => Promise<void>
+  fetchYouTubePlaylistVideos: (playlistId: string) => Promise<void>
+  getYouTubePlaylistById: (id: string) => YouTubePlaylist | null
+  getYouTubePlaylistVideos: (playlistId: string) => YouTubeVideo[]
+  
+  // 페이지네이션 액션들
   setPhotosPagination: (pagination: Partial<PaginationState>) => void
   setPlacesPagination: (pagination: Partial<PaginationState>) => void
-  setMusicPagination: (pagination: Partial<PaginationState>) => void
+  setYouTubePagination: (pagination: Partial<PaginationState>) => void
 }
 
 // Store 생성
@@ -847,8 +859,13 @@ export const useAppStore = create<AppStore>((set, get) => ({
   // 초기 데이터
   albums: mockAlbums,
   places: mockPlaces,
-  musicAlbums: mockMusicAlbums,
-  recentWork: createRecentWorkData(),
+  recentWork: createRecentWorkData([]),
+  
+  // YouTube 초기 데이터
+  youtubePlaylists: [],
+  youtubePlaylistVideos: {},
+  youtubeLoading: false,
+  youtubeError: null,
   
   // 초기 페이지네이션 상태
   photosPagination: {
@@ -861,10 +878,10 @@ export const useAppStore = create<AppStore>((set, get) => ({
     itemsPerPage: 9,
     totalPages: Math.ceil(mockPlaces.length / 9)
   },
-  musicPagination: {
+  youtubePagination: {
     currentPage: 1,
     itemsPerPage: 9,
-    totalPages: Math.ceil(Object.keys(mockMusicAlbums).length / 9)
+    totalPages: 0
   },
   
   // 액션들
@@ -882,16 +899,9 @@ export const useAppStore = create<AppStore>((set, get) => ({
     return places.slice(startIndex, endIndex)
   },
   
-  getCurrentMusicAlbums: () => {
-    const { musicAlbums, musicPagination } = get()
-    const albumIds = Object.keys(musicAlbums)
-    const startIndex = (musicPagination.currentPage - 1) * musicPagination.itemsPerPage
-    const endIndex = startIndex + musicPagination.itemsPerPage
-    return albumIds.slice(startIndex, endIndex).map(id => musicAlbums[id])
-  },
   
-  getCurrentGalleryItems: (category: 'photos' | 'place' | 'music') => {
-    const { albums, places, musicAlbums, photosPagination, placesPagination, musicPagination } = get()
+  getCurrentGalleryItems: (category: 'photos' | 'place' | 'youtube') => {
+    const { albums, places, youtubePlaylists, photosPagination, placesPagination, youtubePagination } = get()
     
     switch (category) {
       case 'photos':
@@ -918,31 +928,23 @@ export const useAppStore = create<AppStore>((set, get) => ({
           createdAt: place.createdAt
         }))
       
-      case 'music':
-        const albumIds = Object.keys(musicAlbums)
-        const startMusicIndex = (musicPagination.currentPage - 1) * musicPagination.itemsPerPage
-        const endMusicIndex = startMusicIndex + musicPagination.itemsPerPage
-        return albumIds.slice(startMusicIndex, endMusicIndex).map(id => {
-          const album = musicAlbums[id]
-          return {
-            id: album.id,
-            title: album.title,
-            thumbnail: album.albumArt,
-            subtitle: album.artist,
-            category: album.category,
-            createdAt: album.createdAt
-          }
-        })
+      case 'youtube':
+        const startYouTubeIndex = (youtubePagination.currentPage - 1) * youtubePagination.itemsPerPage
+        const endYouTubeIndex = startYouTubeIndex + youtubePagination.itemsPerPage
+        return youtubePlaylists.slice(startYouTubeIndex, endYouTubeIndex).map(playlist => ({
+          id: playlist.id,
+          title: playlist.title,
+          thumbnail: playlist.thumbnail,
+          subtitle: playlist.channelTitle,
+          category: 'youtube' as const,
+          createdAt: playlist.publishedAt
+        }))
       
       default:
         return []
     }
   },
   
-  getMusicAlbumById: (id: string) => {
-    const { musicAlbums } = get()
-    return musicAlbums[id] || null
-  },
   
   getAlbumById: (id: string) => {
     const { albums } = get()
@@ -1172,9 +1174,65 @@ export const useAppStore = create<AppStore>((set, get) => ({
     }))
   },
   
-  setMusicPagination: (pagination) => {
+  
+  setYouTubePagination: (pagination) => {
     set((state) => ({
-      musicPagination: { ...state.musicPagination, ...pagination }
+      youtubePagination: { ...state.youtubePagination, ...pagination }
     }))
+  },
+  
+  // YouTube 액션들
+  fetchYouTubePlaylists: async () => {
+    set({ youtubeLoading: true, youtubeError: null })
+    try {
+      const response = await fetchPlaylists()
+      const { albums, places, musicAlbums } = get()
+      const newRecentWork = createRecentWorkData(response.items)
+      
+      set({
+        youtubePlaylists: response.items,
+        recentWork: newRecentWork,
+        youtubeLoading: false,
+        youtubePagination: {
+          currentPage: 1,
+          itemsPerPage: 9,
+          totalPages: Math.ceil(response.items.length / 9)
+        }
+      })
+    } catch (error) {
+      set({
+        youtubeLoading: false,
+        youtubeError: error instanceof YouTubeApiError ? error.message : 'Failed to fetch playlists'
+      })
+    }
+  },
+  
+  fetchYouTubePlaylistVideos: async (playlistId: string) => {
+    set({ youtubeLoading: true, youtubeError: null })
+    try {
+      const { videos } = await fetchPlaylistWithVideos(playlistId)
+      set((state) => ({
+        youtubePlaylistVideos: {
+          ...state.youtubePlaylistVideos,
+          [playlistId]: videos
+        },
+        youtubeLoading: false
+      }))
+    } catch (error) {
+      set({
+        youtubeLoading: false,
+        youtubeError: error instanceof YouTubeApiError ? error.message : 'Failed to fetch playlist videos'
+      })
+    }
+  },
+  
+  getYouTubePlaylistById: (id: string) => {
+    const { youtubePlaylists } = get()
+    return youtubePlaylists.find(playlist => playlist.id === id) || null
+  },
+  
+  getYouTubePlaylistVideos: (playlistId: string) => {
+    const { youtubePlaylistVideos } = get()
+    return youtubePlaylistVideos[playlistId] || []
   }
 }))
