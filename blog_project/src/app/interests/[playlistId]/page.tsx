@@ -8,7 +8,7 @@ import { ExternalLink } from 'lucide-react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Pagination } from 'swiper/modules'
 import { useAppStore } from '@/store'
-import { YouTubeVideo, YouTubePlayerState } from '@/types'
+import { YouTubePlayerState } from '@/types'
 import { YouTubePlayer, YouTubePlayerControls } from '@/components/youtube/youtube-player'
 
 export default function InterestsPlaylistDetailPage() {
@@ -18,14 +18,14 @@ export default function InterestsPlaylistDetailPage() {
   console.log('Playlist ID from params:', playlistId)
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0)
   const [isPlaying, setIsPlaying] = useState(true)
-  const [playerState, setPlayerState] = useState<YouTubePlayerState>({
-    isPlaying: true,
-    currentVideoId: null,
-    currentVideoIndex: 0,
-    volume: 50,
-    duration: 0,
-    currentTime: 0
-  })
+  // const [playerState, setPlayerState] = useState<YouTubePlayerState>({
+  //   isPlaying: true,
+  //   currentVideoId: null,
+  //   currentVideoIndex: 0,
+  //   volume: 50,
+  //   duration: 0,
+  //   currentTime: 0
+  // })
   const [playerError, setPlayerError] = useState<string | null>(null)
   
   const { 
@@ -153,7 +153,6 @@ export default function InterestsPlaylistDetailPage() {
 
   const handlePlayerStateChange = (newState: YouTubePlayerState) => {
     console.log('Player state changed:', newState)
-    setPlayerState(newState)
     // isPlaying 상태는 YouTubePlayer 컴포넌트에서 직접 관리
   }
 
