@@ -54,7 +54,8 @@ export const createPlayerOptions = (videoId: string, events: any = {}) => ({
   width: '100%',
   videoId,
   playerVars: {
-    autoplay: 0,
+    autoplay: 1,
+    playsinline: 1,
     controls: 1,
     modestbranding: 1,
     rel: 0,

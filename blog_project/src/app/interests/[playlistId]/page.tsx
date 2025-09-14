@@ -17,9 +17,9 @@ export default function InterestsPlaylistDetailPage() {
   
   console.log('Playlist ID from params:', playlistId)
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0)
-  const [isPlaying, setIsPlaying] = useState(false)
+  const [isPlaying, setIsPlaying] = useState(true)
   const [playerState, setPlayerState] = useState<YouTubePlayerState>({
-    isPlaying: false,
+    isPlaying: true,
     currentVideoId: null,
     currentVideoIndex: 0,
     volume: 50,

@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { YouTubeVideo, YouTubePlayerState, YouTubePlayerEvents } from '@/types'
+import { YouTubeVideo, YouTubePlayerState } from '@/types'
 import { loadYouTubeAPI, createPlayerOptions, YT_PLAYER_STATE, getErrorMessage } from '@/lib/youtube-player'
 
 interface YouTubePlayerProps {
@@ -49,10 +49,9 @@ export function YouTubePlayer({
                   ...prev,
                   currentVideoId: video.videoId,
                   duration: event.target.getDuration() || 0,
-                  isPlaying: false
+                  isPlaying: true
                 }))
-                // 초기 상태를 false로 설정
-                setIsPlaying(false)
+                // 초기 상태를 isPlaying prop 값으로 설정
               } catch (error) {
                 console.warn('YouTube Player ready error:', error)
                 // ready 에러는 치명적이지 않으므로 에러 상태로 설정하지 않음
@@ -71,7 +70,6 @@ export function YouTubePlayer({
                   currentTime: playerInstanceRef.current?.getCurrentTime() || 0
                 }
                 setPlayerState(newState)
-                setIsPlaying(isCurrentlyPlaying)
                 onStateChange?.(newState)
               } catch (error) {
                 console.warn('YouTube Player state change error:', error)
@@ -118,7 +116,7 @@ export function YouTubePlayer({
         playerInstanceRef.current = null
       }
     }
-  }, [video.videoId, onStateChange, onError])
+  }, [video.videoId])
 
   // 재생/일시정지 제어
   useEffect(() => {
@@ -149,8 +147,7 @@ export function YouTubePlayer({
       try {
         console.log('Loading new video:', video.videoId)
         playerInstanceRef.current.loadVideoById(video.videoId)
-        // 새 비디오 로드 시 재생 상태를 false로 설정
-        setIsPlaying(false)
+        // 새 비디오 로드 시 재생 상태는 isPlaying prop에 따라 결정됨
       } catch (error) {
         console.warn('YouTube Player video load error:', error)
         onError?.('비디오 로드 중 오류가 발생했습니다.')
