@@ -4,10 +4,10 @@ import { join } from 'path'
 
 export async function GET(
   request: Request,
-  { params }: { params: { placeId: string } }
+  { params }: { params: Promise<{ placeId: string }> }
 ) {
   try {
-    const { placeId } = params
+    const { placeId } = await params
     const filePath = join(process.cwd(), 'data', 'place-photos.json')
     const fileContents = await readFile(filePath, 'utf8')
     const placePhotos = JSON.parse(fileContents)
