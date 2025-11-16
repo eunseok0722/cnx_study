@@ -6,7 +6,8 @@ const nextConfig: NextConfig = {
     domains: [
       'images.unsplash.com',
       'img.youtube.com',
-      'i.ytimg.com'
+      'i.ytimg.com',
+      'res.cloudinary.com' // Cloudinary 이미지 호스팅
     ],
     formats: ['image/webp', 'image/avif'],
   },

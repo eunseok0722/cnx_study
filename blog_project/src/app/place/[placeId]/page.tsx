@@ -1,9 +1,11 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import { Header } from '@/components/layout/header'
 import { DetailSwiper } from '@/components/detail/detail-swiper'
 import { useAppStore } from '@/store'
+import { DetailItem } from '@/types'
 
 export default function PlaceDetailPage() {
   const params = useParams()
@@ -11,7 +13,39 @@ export default function PlaceDetailPage() {
   
   const { getPlaceById, getPlacePhotos } = useAppStore()
   const place = getPlaceById(placeId)
-  const photos = getPlacePhotos(placeId)
+  const [photos, setPhotos] = useState<DetailItem[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const loadPhotos = async () => {
+      if (placeId) {
+        setLoading(true)
+        try {
+          const fetchedPhotos = await getPlacePhotos(placeId)
+          setPhotos(fetchedPhotos)
+        } catch (error) {
+          console.error('Failed to load place photos:', error)
+        } finally {
+          setLoading(false)
+        }
+      }
+    }
+    
+    loadPhotos()
+  }, [placeId, getPlacePhotos])
+
+  if (loading) {
+    return (
+      <>
+        <Header />
+        <div className="pt-20 min-h-screen bg-gray-50 flex items-center justify-center">
+          <div className="text-center">
+            <p className="text-gray-600">로딩 중...</p>
+          </div>
+        </div>
+      </>
+    )
+  }
 
   if (!place || !photos.length) {
     return (

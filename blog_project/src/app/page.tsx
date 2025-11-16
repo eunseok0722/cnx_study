@@ -5,12 +5,14 @@ import { RecentWorkCarousel } from '@/components/home/recent-work-carousel'
 import { useAppStore } from '@/store'
 
 export default function Home() {
-  const { recentWork, fetchYouTubePlaylists } = useAppStore()
+  const { recentWork, fetchAlbums, fetchPlaces, fetchYouTubePlaylists } = useAppStore()
   
-  // 컴포넌트 마운트 시 YouTube 재생목록 가져오기
+  // 컴포넌트 마운트 시 데이터 가져오기
   useEffect(() => {
+    fetchAlbums()
+    fetchPlaces()
     fetchYouTubePlaylists()
-  }, [fetchYouTubePlaylists])
+  }, [fetchAlbums, fetchPlaces, fetchYouTubePlaylists])
   
   return (
     <div className="pt-20 min-h-screen bg-gray-50">
@@ -30,7 +32,7 @@ export default function Home() {
           {/* RECENT WORK 섹션 */}
           <div className="mb-12">
             <h2 className="text-3xl font-bold mb-8 tracking-wide">RECENT WORK</h2>
-            <RecentWorkCarousel albums={recentWork.slice(0, 8)} />
+            <RecentWorkCarousel albums={recentWork?.slice(0, 8) || []} />
           </div>
         </div>
       </div>

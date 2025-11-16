@@ -1,8 +1,15 @@
 import { create } from 'zustand'
 import { Album, Place, PaginationState, GalleryItem, DetailItem, YouTubePlaylist, YouTubeVideo } from '@/types'
 import { fetchPlaylists, fetchPlaylistWithVideos, YouTubeApiError } from '@/lib/youtube-api'
+import { 
+  fetchAlbums as fetchAlbumsFromApi, 
+  fetchPlaces as fetchPlacesFromApi, 
+  fetchAlbumPhotos, 
+  fetchPlacePhotos,
+  AlbumsApiError 
+} from '@/lib/albums-api'
 
-// 통합 Mock 데이터
+// 통합 Mock 데이터 (폴백용 - API 실패 시 사용)
 const mockAlbums: Album[] = [
   {
     id: '1',
@@ -227,10 +234,14 @@ const mockPlaces: Place[] = [
 
 
 // 통합된 최신 작업 데이터 생성
-const createRecentWorkData = (youtubePlaylists: any[] = []) => {
+const createRecentWorkData = (
+  albums: Album[] = [], 
+  places: Place[] = [], 
+  youtubePlaylists: any[] = []
+) => {
   const allItems = [
     // Photos 데이터
-    ...mockAlbums.map(album => ({
+    ...albums.map(album => ({
       id: `photos-${album.id}`,
       title: album.title,
       thumbnail: album.thumbnail,
@@ -238,7 +249,7 @@ const createRecentWorkData = (youtubePlaylists: any[] = []) => {
       createdAt: album.createdAt
     })),
     // Places 데이터
-    ...mockPlaces.map(place => ({
+    ...places.map(place => ({
       id: `place-${place.id}`,
       title: place.title,
       thumbnail: place.thumbnail,
@@ -264,6 +275,14 @@ interface AppStore {
   // 기존 데이터
   albums: Album[]
   places: Place[]
+  albumPhotos: Record<string, DetailItem[]>
+  placePhotos: Record<string, DetailItem[]>
+  
+  // 로딩 및 에러 상태
+  albumsLoading: boolean
+  placesLoading: boolean
+  albumsError: string | null
+  placesError: string | null
   
   // YouTube 데이터
   youtubePlaylists: YouTubePlaylist[]
@@ -280,13 +299,15 @@ interface AppStore {
   youtubePagination: PaginationState
   
   // 액션들
+  fetchAlbums: () => Promise<void>
+  fetchPlaces: () => Promise<void>
   getCurrentAlbums: () => Album[]
   getCurrentPlaces: () => Place[]
   getCurrentGalleryItems: (category: 'photos' | 'place' | 'youtube') => GalleryItem[]
   getAlbumById: (id: string) => Album | null
   getPlaceById: (id: string) => Place | null
-  getAlbumPhotos: (albumId: string) => DetailItem[]
-  getPlacePhotos: (placeId: string) => DetailItem[]
+  getAlbumPhotos: (albumId: string) => Promise<DetailItem[]>
+  getPlacePhotos: (placeId: string) => Promise<DetailItem[]>
   
   // YouTube 액션들
   fetchYouTubePlaylists: () => Promise<void>
@@ -303,9 +324,19 @@ interface AppStore {
 // Store 생성
 export const useAppStore = create<AppStore>((set, get) => ({
   // 초기 데이터
-  albums: mockAlbums,
-  places: mockPlaces,
-  recentWork: createRecentWorkData([]),
+  albums: [],
+  places: [],
+  albumPhotos: {},
+  placePhotos: {},
+  
+  // 로딩 및 에러 상태
+  albumsLoading: false,
+  placesLoading: false,
+  albumsError: null,
+  placesError: null,
+  
+  // 통합된 최신 작업 데이터 (초기값)
+  recentWork: createRecentWorkData([], [], []),
   
   // YouTube 초기 데이터
   youtubePlaylists: [],
@@ -317,17 +348,104 @@ export const useAppStore = create<AppStore>((set, get) => ({
   photosPagination: {
     currentPage: 1,
     itemsPerPage: 9,
-    totalPages: Math.ceil(mockAlbums.length / 9)
+    totalPages: 0
   },
   placesPagination: {
     currentPage: 1,
     itemsPerPage: 9,
-    totalPages: Math.ceil(mockPlaces.length / 9)
+    totalPages: 0
   },
   youtubePagination: {
     currentPage: 1,
     itemsPerPage: 9,
     totalPages: 0
+  },
+  
+  // Albums & Places 액션들
+  fetchAlbums: async () => {
+    set({ albumsLoading: true, albumsError: null })
+    try {
+      const albums = await fetchAlbumsFromApi()
+      // 최신순으로 정렬 (createdAt 기준 내림차순)
+      const sortedAlbums = [...albums].sort((a, b) => 
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      )
+      const { places, youtubePlaylists } = get()
+      const newRecentWork = createRecentWorkData(sortedAlbums, places, youtubePlaylists)
+      
+      set({
+        albums: sortedAlbums,
+        recentWork: newRecentWork,
+        albumsLoading: false,
+        photosPagination: {
+          currentPage: 1,
+          itemsPerPage: 9,
+          totalPages: Math.ceil(sortedAlbums.length / 9)
+        }
+      })
+    } catch (error) {
+      // 에러 발생 시 Mock 데이터로 폴백
+      const sortedMockAlbums = [...mockAlbums].sort((a, b) => 
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      )
+      const { places, youtubePlaylists } = get()
+      const newRecentWork = createRecentWorkData(sortedMockAlbums, places, youtubePlaylists)
+      
+      set({
+        albums: sortedMockAlbums,
+        recentWork: newRecentWork,
+        albumsLoading: false,
+        albumsError: error instanceof AlbumsApiError ? error.message : 'Failed to fetch albums',
+        photosPagination: {
+          currentPage: 1,
+          itemsPerPage: 9,
+          totalPages: Math.ceil(sortedMockAlbums.length / 9)
+        }
+      })
+    }
+  },
+  
+  fetchPlaces: async () => {
+    set({ placesLoading: true, placesError: null })
+    try {
+      const places = await fetchPlacesFromApi()
+      // 최신순으로 정렬 (createdAt 기준 내림차순)
+      const sortedPlaces = [...places].sort((a, b) => 
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      )
+      const { albums, youtubePlaylists } = get()
+      const newRecentWork = createRecentWorkData(albums, sortedPlaces, youtubePlaylists)
+      
+      set({
+        places: sortedPlaces,
+        recentWork: newRecentWork,
+        placesLoading: false,
+        placesPagination: {
+          currentPage: 1,
+          itemsPerPage: 9,
+          totalPages: Math.ceil(sortedPlaces.length / 9)
+        }
+      })
+    } catch (error) {
+      // 에러 발생 시 Mock 데이터로 폴백
+      const sortedMockPlaces = [...mockPlaces].sort((a, b) => 
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      )
+      const { albums, youtubePlaylists } = get()
+      const newRecentWork = createRecentWorkData(albums, sortedMockPlaces, youtubePlaylists)
+      
+      set({
+        places: sortedMockPlaces,
+        recentWork: newRecentWork,
+        placesLoading: false,
+        placesError: error instanceof AlbumsApiError ? error.message : 'Failed to fetch places',
+        placesPagination: {
+          currentPage: 1,
+          itemsPerPage: 9,
+          totalPages: Math.ceil(sortedMockPlaces.length / 9)
+        }
+      })
+    }
   },
   
   // 액션들
@@ -402,9 +520,28 @@ export const useAppStore = create<AppStore>((set, get) => ({
     return places.find(place => place.id === id) || null
   },
   
-  getAlbumPhotos: (albumId: string): DetailItem[] => {
-    // Mock photos for albums with new structure
-    const albumPhotos: Record<string, DetailItem[]> = {
+  getAlbumPhotos: async (albumId: string): Promise<DetailItem[]> => {
+    const { albumPhotos } = get()
+    
+    // 이미 캐시된 데이터가 있으면 반환
+    if (albumPhotos[albumId]) {
+      return albumPhotos[albumId]
+    }
+    
+    // API에서 데이터 가져오기
+    try {
+      const photos = await fetchAlbumPhotos(albumId)
+      set((state) => ({
+        albumPhotos: {
+          ...state.albumPhotos,
+          [albumId]: photos
+        }
+      }))
+      return photos
+    } catch (error) {
+      console.error('Failed to fetch album photos:', error)
+      // 폴백: Mock 데이터 반환
+      const mockPhotos: Record<string, DetailItem[]> = {
       '1': [
         {
           id: '1',
@@ -471,7 +608,7 @@ export const useAppStore = create<AppStore>((set, get) => ({
       ]
     }
     
-    return albumPhotos[albumId] || [
+    return mockPhotos[albumId] || [
       {
         id: '1',
         title: 'Default Morning View',
@@ -503,11 +640,31 @@ export const useAppStore = create<AppStore>((set, get) => ({
         image: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=600&fit=crop'
       }
     ]
+    }
   },
   
-  getPlacePhotos: (placeId: string): DetailItem[] => {
-    // Mock photos for places with new structure
-    const placePhotos: Record<string, DetailItem[]> = {
+  getPlacePhotos: async (placeId: string): Promise<DetailItem[]> => {
+    const { placePhotos } = get()
+    
+    // 이미 캐시된 데이터가 있으면 반환
+    if (placePhotos[placeId]) {
+      return placePhotos[placeId]
+    }
+    
+    // API에서 데이터 가져오기
+    try {
+      const photos = await fetchPlacePhotos(placeId)
+      set((state) => ({
+        placePhotos: {
+          ...state.placePhotos,
+          [placeId]: photos
+        }
+      }))
+      return photos
+    } catch (error) {
+      console.error('Failed to fetch place photos:', error)
+      // 폴백: Mock 데이터 반환
+      const mockPhotos: Record<string, DetailItem[]> = {
       '1': [
         {
           id: '1',
@@ -574,7 +731,7 @@ export const useAppStore = create<AppStore>((set, get) => ({
       ]
     }
     
-    return placePhotos[placeId] || [
+    return mockPhotos[placeId] || [
       {
         id: '1',
         title: 'Default Ramen',
@@ -606,6 +763,7 @@ export const useAppStore = create<AppStore>((set, get) => ({
         image: 'https://images.unsplash.com/photo-1553621042-f6e147245754?w=800&h=600&fit=crop'
       }
     ]
+    }
   },
   
   setPhotosPagination: (pagination) => {
@@ -632,8 +790,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
     set({ youtubeLoading: true, youtubeError: null })
     try {
       const response = await fetchPlaylists()
-      // const { albums, places } = get() // 현재 사용하지 않음
-      const newRecentWork = createRecentWorkData(response.items)
+      const { albums, places } = get()
+      const newRecentWork = createRecentWorkData(albums, places, response.items)
       
       set({
         youtubePlaylists: response.items,

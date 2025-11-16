@@ -1,9 +1,11 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import { Header } from '@/components/layout/header'
 import { DetailSwiper } from '@/components/detail/detail-swiper'
 import { useAppStore } from '@/store'
+import { DetailItem } from '@/types'
 
 export default function AlbumDetailPage() {
   const params = useParams()
@@ -11,7 +13,39 @@ export default function AlbumDetailPage() {
   
   const { getAlbumById, getAlbumPhotos } = useAppStore()
   const album = getAlbumById(albumId)
-  const photos = getAlbumPhotos(albumId)
+  const [photos, setPhotos] = useState<DetailItem[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const loadPhotos = async () => {
+      if (albumId) {
+        setLoading(true)
+        try {
+          const fetchedPhotos = await getAlbumPhotos(albumId)
+          setPhotos(fetchedPhotos)
+        } catch (error) {
+          console.error('Failed to load album photos:', error)
+        } finally {
+          setLoading(false)
+        }
+      }
+    }
+    
+    loadPhotos()
+  }, [albumId, getAlbumPhotos])
+
+  if (loading) {
+    return (
+      <>
+        <Header />
+        <div className="pt-20 min-h-screen bg-gray-50 flex items-center justify-center">
+          <div className="text-center">
+            <p className="text-gray-600">로딩 중...</p>
+          </div>
+        </div>
+      </>
+    )
+  }
 
   if (!album || !photos.length) {
     return (

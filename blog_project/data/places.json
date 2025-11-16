@@ -1,0 +1,111 @@
+[
+  {
+    "id": "1",
+    "title": "Traditional Ramen House",
+    "thumbnail": "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400&h=300&fit=crop",
+    "category": "place",
+    "createdAt": "2024-04-10",
+    "imageCount": 24,
+    "description": "전통적인 라멘 맛집입니다. 50년 전통의 육수와 수제 면발로 만든 진정한 일본 라멘의 맛을 경험해보세요."
+  },
+  {
+    "id": "2",
+    "title": "Kyoto Sushi Bar",
+    "thumbnail": "https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=400&h=500&fit=crop",
+    "category": "place",
+    "createdAt": "2024-03-15",
+    "imageCount": 18,
+    "description": "교토의 전통과 현대가 만나는 스시 바입니다. 신선한 재료와 장인의 솜씨로 만든 스시를 즐겨보세요."
+  },
+  {
+    "id": "3",
+    "title": "Street Food Market",
+    "thumbnail": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&h=400&fit=crop",
+    "category": "place",
+    "createdAt": "2024-05-05",
+    "imageCount": 32,
+    "description": "다양한 길거리 음식을 한자리에서 만날 수 있는 시장입니다. 현지인들이 사랑하는 맛집들이 모여있습니다."
+  },
+  {
+    "id": "4",
+    "title": "Cozy Coffee Shop",
+    "thumbnail": "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=400&h=600&fit=crop",
+    "category": "place",
+    "createdAt": "2024-07-01",
+    "imageCount": 15,
+    "description": "아늑한 분위기의 커피숍입니다. 로스팅한 원두로 내린 커피와 수제 디저트를 즐길 수 있습니다."
+  },
+  {
+    "id": "5",
+    "title": "Authentic Izakaya",
+    "thumbnail": "https://images.unsplash.com/photo-1553621042-f6e147245754?w=400&h=350&fit=crop",
+    "category": "place",
+    "createdAt": "2024-06-08",
+    "imageCount": 27,
+    "description": "진정한 일본 이자카야의 분위기를 느낄 수 있는 곳입니다. 전통적인 안주와 사케를 함께 즐겨보세요."
+  },
+  {
+    "id": "6",
+    "title": "Modern Fusion Restaurant",
+    "thumbnail": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=450&fit=crop",
+    "category": "place",
+    "createdAt": "2024-01-20",
+    "imageCount": 22,
+    "description": "동서양의 맛을 창의적으로 조합한 퓨전 레스토랑입니다. 독특한 조합으로 만든 특별한 요리를 경험해보세요."
+  },
+  {
+    "id": "7",
+    "title": "Traditional Tea House",
+    "thumbnail": "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=400&h=380&fit=crop",
+    "category": "place",
+    "createdAt": "2023-12-12",
+    "imageCount": 19,
+    "description": "전통 다실에서 차 문화를 체험할 수 있는 곳입니다. 정갈한 다과와 함께하는 차 한 잔의 여유를 느껴보세요."
+  },
+  {
+    "id": "8",
+    "title": "Seafood Market",
+    "thumbnail": "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=400&h=520&fit=crop",
+    "category": "place",
+    "createdAt": "2023-11-25",
+    "imageCount": 31,
+    "description": "신선한 해산물을 직접 구매할 수 있는 수산시장입니다. 아침 일찍 방문하면 최고급 생선들을 만날 수 있습니다."
+  },
+  {
+    "id": "9",
+    "title": "Artisan Bakery",
+    "thumbnail": "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&h=420&fit=crop",
+    "category": "place",
+    "createdAt": "2023-10-10",
+    "imageCount": 28,
+    "description": "아티장 베이커리에서 만든 수제 빵과 페이스트리를 즐길 수 있습니다. 매일 아침 구워내는 신선한 빵의 맛을 경험해보세요."
+  },
+  {
+    "id": "10",
+    "title": "Rooftop Dining",
+    "thumbnail": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=480&fit=crop",
+    "category": "place",
+    "createdAt": "2023-09-03",
+    "imageCount": 16,
+    "description": "도시의 아름다운 전경을 바라보며 식사를 즐길 수 있는 루프탑 레스토랑입니다. 로맨틱한 저녁 식사에 최적입니다."
+  },
+  {
+    "id": "11",
+    "title": "Hidden Gem Cafe",
+    "thumbnail": "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=400&h=380&fit=crop",
+    "category": "place",
+    "createdAt": "2023-08-18",
+    "imageCount": 25,
+    "description": "알고 있는 사람만 아는 숨겨진 보석 같은 카페입니다. 특별한 분위기와 맛있는 음료를 즐길 수 있습니다."
+  },
+  {
+    "id": "12",
+    "title": "Traditional Tempura",
+    "thumbnail": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=450&fit=crop",
+    "category": "place",
+    "createdAt": "2023-07-10",
+    "imageCount": 33,
+    "description": "전통적인 텐푸라 전문점입니다. 바삭한 튀김과 신선한 재료로 만든 텐푸라의 진정한 맛을 경험해보세요."
+  }
+]
+

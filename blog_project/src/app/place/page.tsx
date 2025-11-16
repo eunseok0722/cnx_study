@@ -1,20 +1,37 @@
 'use client'
 
+import { useEffect } from 'react'
 import { useAppStore } from '@/store'
 import { GalleryGrid } from '@/components/gallery/gallery-grid'
 
 export default function PlacePage() {
   const { 
+    fetchPlaces,
     getCurrentGalleryItems, 
     placesPagination, 
-    setPlacesPagination 
+    setPlacesPagination,
+    placesLoading
   } = useAppStore()
+  
+  useEffect(() => {
+    fetchPlaces()
+  }, [fetchPlaces])
   
   const currentItems = getCurrentGalleryItems('place')
   const { currentPage, totalPages } = placesPagination
   
   const handlePageChange = (page: number) => {
     setPlacesPagination({ currentPage: page })
+  }
+  
+  if (placesLoading) {
+    return (
+      <div className="pt-20 min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-gray-600">로딩 중...</p>
+        </div>
+      </div>
+    )
   }
 
   return (

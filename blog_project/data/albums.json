@@ -1,0 +1,29 @@
+[
+  {
+    "id": "album-250811",
+    "title": "2508. 남양주",
+    "thumbnail": "https://res.cloudinary.com/dwbqnmukr/image/upload/v1763304524/album-250811/20250812_105555.jpg",
+    "category": "photos",
+    "createdAt": "2025-08-11",
+    "imageCount": 206,
+    "description": "2508. 남양주 앨범"
+  },
+  {
+    "id": "album-250603",
+    "title": "2506. 청와대",
+    "thumbnail": "https://res.cloudinary.com/dwbqnmukr/image/upload/v1763304639/album-250603/20250603_091940.jpg",
+    "category": "photos",
+    "createdAt": "2025-06-03",
+    "imageCount": 61,
+    "description": "2506. 청와대 앨범"
+  },
+  {
+    "id": "album-25100701",
+    "title": "2510. 추석",
+    "thumbnail": "https://res.cloudinary.com/dwbqnmukr/image/upload/v1763303614/album-25100701/1759728724039.jpg",
+    "category": "photos",
+    "createdAt": "2025-10-07",
+    "imageCount": 108,
+    "description": "2510. 추석 앨범"
+  }
+]
