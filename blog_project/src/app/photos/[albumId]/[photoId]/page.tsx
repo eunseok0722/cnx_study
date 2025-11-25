@@ -12,7 +12,7 @@ export default function PhotoDetailPage() {
   const albumId = params.albumId as string
   const photoId = params.photoId as string
   
-  const { getAlbumById, getAlbumPhotos } = useAppStore()
+  const { getAlbumById, getAlbumPhotos, fetchAlbums, albums } = useAppStore()
   const album = getAlbumById(albumId)
   const [photos, setPhotos] = useState<DetailItem[]>([])
   const [loading, setLoading] = useState(true)
@@ -23,6 +23,11 @@ export default function PhotoDetailPage() {
       if (albumId) {
         setLoading(true)
         try {
+          // 앨범 목록이 없으면 먼저 로드
+          if (albums.length === 0) {
+            await fetchAlbums()
+          }
+          
           const fetchedPhotos = await getAlbumPhotos(albumId)
           setPhotos(fetchedPhotos)
           
@@ -40,7 +45,7 @@ export default function PhotoDetailPage() {
     }
     
     loadPhotos()
-  }, [albumId, photoId, getAlbumPhotos])
+  }, [albumId, photoId, getAlbumPhotos, fetchAlbums, albums.length])
 
   if (loading) {
     return (
