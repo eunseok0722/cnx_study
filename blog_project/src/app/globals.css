@@ -86,12 +86,13 @@
 }
 
 /* Custom Swiper Styles */
-.recent-work-swiper {
+/* Carousel Swiper Styles - 통합된 스타일 */
+.carousel-swiper {
   width: 100%;
   padding: 20px 0 60px;
 }
 
-.recent-work-swiper .swiper-slide {
+.carousel-swiper .swiper-slide {
   text-align: left;
   font-size: 18px;
   background: transparent;
@@ -101,7 +102,75 @@
   align-items: flex-start;
 }
 
-.recent-work-swiper .swiper-slide img {
+.carousel-swiper .swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.carousel-swiper .swiper-button-next,
+.carousel-swiper .swiper-button-prev {
+  color: #000;
+  background: rgba(255, 255, 255, 0.9);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.carousel-swiper .swiper-button-next:hover,
+.carousel-swiper .swiper-button-prev:hover {
+  background: rgba(255, 255, 255, 1);
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.carousel-swiper .swiper-button-next::after,
+.carousel-swiper .swiper-button-prev::after {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.carousel-swiper .swiper-pagination {
+  bottom: 0;
+}
+
+.carousel-swiper .swiper-pagination-bullet {
+  background: #000;
+  opacity: 0.3;
+  width: 8px;
+  height: 8px;
+  transition: all 0.3s ease;
+}
+
+.carousel-swiper .swiper-pagination-bullet-active {
+  opacity: 1;
+  width: 24px;
+  border-radius: 4px;
+}
+
+/* 하위 호환성을 위한 별칭 (선택사항 - 나중에 제거 가능) */
+.recent-work-swiper,
+.category-carousel-swiper {
+  width: 100%;
+  padding: 20px 0 60px;
+}
+
+.recent-work-swiper .swiper-slide,
+.category-carousel-swiper .swiper-slide {
+  text-align: left;
+  font-size: 18px;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.recent-work-swiper .swiper-slide img,
+.category-carousel-swiper .swiper-slide img {
   display: block;
   width: 100%;
   height: 100%;
@@ -109,7 +178,9 @@
 }
 
 .recent-work-swiper .swiper-button-next,
-.recent-work-swiper .swiper-button-prev {
+.recent-work-swiper .swiper-button-prev,
+.category-carousel-swiper .swiper-button-next,
+.category-carousel-swiper .swiper-button-prev {
   color: #000;
   background: rgba(255, 255, 255, 0.9);
   width: 44px;
@@ -120,23 +191,29 @@
 }
 
 .recent-work-swiper .swiper-button-next:hover,
-.recent-work-swiper .swiper-button-prev:hover {
+.recent-work-swiper .swiper-button-prev:hover,
+.category-carousel-swiper .swiper-button-next:hover,
+.category-carousel-swiper .swiper-button-prev:hover {
   background: rgba(255, 255, 255, 1);
   transform: scale(1.1);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .recent-work-swiper .swiper-button-next::after,
-.recent-work-swiper .swiper-button-prev::after {
+.recent-work-swiper .swiper-button-prev::after,
+.category-carousel-swiper .swiper-button-next::after,
+.category-carousel-swiper .swiper-button-prev::after {
   font-size: 16px;
   font-weight: bold;
 }
 
-.recent-work-swiper .swiper-pagination {
+.recent-work-swiper .swiper-pagination,
+.category-carousel-swiper .swiper-pagination {
   bottom: 0;
 }
 
-.recent-work-swiper .swiper-pagination-bullet {
+.recent-work-swiper .swiper-pagination-bullet,
+.category-carousel-swiper .swiper-pagination-bullet {
   background: #000;
   opacity: 0.3;
   width: 8px;
@@ -144,7 +221,8 @@
   transition: all 0.3s ease;
 }
 
-.recent-work-swiper .swiper-pagination-bullet-active {
+.recent-work-swiper .swiper-pagination-bullet-active,
+.category-carousel-swiper .swiper-pagination-bullet-active {
   opacity: 1;
   width: 24px;
   border-radius: 4px;

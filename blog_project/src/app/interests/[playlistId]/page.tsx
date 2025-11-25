@@ -223,7 +223,7 @@ export default function InterestsPlaylistDetailPage() {
                 </div>
                 
                 {/* YouTube 플레이어 */}
-                <div className="relative w-80 h-80 lg:w-96 lg:h-96 rounded-lg overflow-hidden shadow-2xl">
+                <div className="relative w-full aspect-square lg:w-96 lg:h-96 xl:w-[560px] xl:h-[560px] rounded-lg overflow-hidden shadow-2xl">
                   <YouTubePlayer
                     video={currentVideo}
                     isPlaying={isPlaying}
@@ -234,11 +234,11 @@ export default function InterestsPlaylistDetailPage() {
                 </div>
                 
                 {/* 비디오 정보 */}
-                <div className="text-center lg:text-left">
-                  <h1 className="text-3xl lg:text-4xl font-bold text-white mb-2">
+                <div className="text-center lg:text-left w-full lg:max-w-[384px] xl:max-w-[560px]">
+                  <h1 className="text-3xl lg:text-4xl font-bold text-white mb-2 break-words">
                     {currentVideo.title}
                   </h1>
-                  <p className="text-xl text-white/80">
+                  <p className="text-xl text-white/80 break-words">
                     {currentVideo.channelTitle}
                   </p>
                   <p className="text-sm text-white/60 mt-2">

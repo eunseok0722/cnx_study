@@ -28,8 +28,13 @@ try {
   const envPath = path.join(process.cwd(), '.env.local')
   if (require('fs').existsSync(envPath)) {
     const envContent = require('fs').readFileSync(envPath, 'utf-8')
-    envContent.split('\n').forEach(line => {
-      const match = line.match(/^([^=:#]+)=(.*)$/)
+    envContent.split(/\r?\n/).forEach(line => {
+      const trimmed = line.trim()
+      // 빈 줄이나 주석 줄은 건너뛰기
+      if (!trimmed || trimmed.startsWith('#')) {
+        return
+      }
+      const match = trimmed.match(/^([^=:#]+)=(.*)$/)
       if (match) {
         const key = match[1].trim()
         const value = match[2].trim().replace(/^["']|["']$/g, '')
@@ -223,6 +228,50 @@ function isImageFile(filename) {
   return imageExtensions.includes(ext)
 }
 
+// ==================== Cloudinary 환경변수 검증 ====================
+function validateCloudinaryEnv(skipUpload) {
+  if (skipUpload) {
+    console.log('⏭️  Cloudinary 업로드가 건너뛰어지므로 환경변수 검증을 생략합니다.\n')
+    return { valid: true, skip: true }
+  }
+  
+  console.log('🔍 Cloudinary 환경변수 검증 중...\n')
+  
+  const missing = []
+  
+  if (!CLOUD_NAME) {
+    missing.push('CLOUDINARY_CLOUD_NAME (또는 NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME)')
+  }
+  
+  if (!API_KEY) {
+    missing.push('CLOUDINARY_API_KEY')
+  }
+  
+  if (!usePreset && !API_SECRET) {
+    missing.push('CLOUDINARY_API_SECRET (또는 CLOUDINARY_UPLOAD_PRESET)')
+  }
+  
+  if (missing.length > 0) {
+    console.warn('⚠️  다음 Cloudinary 환경변수가 설정되지 않았습니다:')
+    missing.forEach(env => console.warn(`   - ${env}`))
+    console.warn('\n   업로드 단계에서 자동으로 건너뛰어집니다.')
+    console.warn('   --skip-upload 플래그를 사용하여 업로드 없이 진행할 수 있습니다.\n')
+    return { valid: false, missing }
+  }
+  
+  console.log('✅ Cloudinary 환경변수 검증 완료')
+  console.log(`   Cloud Name: ${CLOUD_NAME}`)
+  console.log(`   API Key: ${API_KEY ? API_KEY.substring(0, 8) + '...' : 'N/A'}`)
+  if (usePreset) {
+    console.log(`   Upload Preset: ${UPLOAD_PRESET}`)
+  } else {
+    console.log(`   API Secret: ${API_SECRET ? '설정됨' : 'N/A'}`)
+  }
+  console.log('')
+  
+  return { valid: true, missing: [] }
+}
+
 // ==================== 메인 함수 ====================
 async function importAlbumComplete(imagesFolder, albumId, albumTitle, publicIdPrefix = '', skipUpload = false) {
   try {
@@ -231,12 +280,15 @@ async function importAlbumComplete(imagesFolder, albumId, albumTitle, publicIdPr
     console.log(`🆔 앨범 ID: ${albumId}`)
     console.log(`📝 앨범 제목: ${albumTitle}\n`)
     
+    // ========== Step 0: Cloudinary 환경변수 검증 ==========
+    const envValidation = validateCloudinaryEnv(skipUpload)
+    
     // ========== Step 1: 이미지 메타데이터 추출 및 JSON 생성 ==========
     console.log('📋 Step 1: 이미지 메타데이터 추출 중...\n')
     
     const folderPath = path.resolve(imagesFolder)
     const files = await fs.readdir(folderPath)
-    const imageFiles = files.filter(isImageFile).sort()
+    const imageFiles = files.filter(isImageFile)
     
     if (imageFiles.length === 0) {
       console.error('❌ 이미지 파일을 찾을 수 없습니다.')
@@ -245,7 +297,9 @@ async function importAlbumComplete(imagesFolder, albumId, albumTitle, publicIdPr
     
     console.log(`✅ ${imageFiles.length}개의 이미지를 찾았습니다.\n`)
     
-    const photos = []
+    // 모든 파일의 메타데이터를 먼저 추출
+    console.log('📸 메타데이터 추출 중...')
+    const filesWithMetadata = []
     for (let i = 0; i < imageFiles.length; i++) {
       const file = imageFiles[i]
       const filePath = path.join(folderPath, file)
@@ -254,6 +308,28 @@ async function importAlbumComplete(imagesFolder, albumId, albumTitle, publicIdPr
       
       const metadata = await extractMetadata(filePath)
       
+      filesWithMetadata.push({
+        file,
+        filePath,
+        metadata
+      })
+    }
+    console.log('\n')
+    
+    // 촬영 시간(createdAt) 기준으로 정렬 (오래된 순서부터)
+    console.log('🕐 촬영 시간 기준으로 정렬 중...')
+    filesWithMetadata.sort((a, b) => {
+      const dateA = new Date(a.metadata.createdAt).getTime()
+      const dateB = new Date(b.metadata.createdAt).getTime()
+      return dateA - dateB // 오래된 순서부터 (역순으로 하려면 dateB - dateA)
+    })
+    console.log('✅ 정렬 완료\n')
+    
+    // 정렬된 순서대로 photos 배열 생성
+    const photos = []
+    for (let i = 0; i < filesWithMetadata.length; i++) {
+      const { file, metadata } = filesWithMetadata[i]
+      
       photos.push({
         id: String(i + 1),
         title: metadata.title,
@@ -261,7 +337,6 @@ async function importAlbumComplete(imagesFolder, albumId, albumTitle, publicIdPr
         image: skipUpload ? '' : '[Cloudinary URL을 여기에 입력]'
       })
     }
-    console.log('\n')
     
     // 앨범 정보 생성
     const album = {
@@ -289,9 +364,8 @@ async function importAlbumComplete(imagesFolder, albumId, albumTitle, publicIdPr
     
     // ========== Step 2: Cloudinary 업로드 (선택) ==========
     if (!skipUpload) {
-      if (!CLOUD_NAME || !API_KEY || (!API_SECRET && !usePreset)) {
-        console.warn('⚠️  Cloudinary 환경변수가 설정되지 않아 업로드를 건너뜁니다.')
-        console.warn('   --skip-upload 플래그를 사용하여 업로드 없이 진행할 수 있습니다.\n')
+      if (!envValidation.valid || envValidation.missing.length > 0) {
+        console.log('⏭️  Step 2: Cloudinary 업로드 건너뜀 (환경변수 미설정)\n')
       } else {
         console.log('☁️  Step 2: Cloudinary에 이미지 업로드 중...\n')
         console.log(`   Cloud Name: ${CLOUD_NAME}`)
@@ -299,9 +373,8 @@ async function importAlbumComplete(imagesFolder, albumId, albumTitle, publicIdPr
         
         const uploadPromises = []
         
-        for (let i = 0; i < imageFiles.length; i++) {
-          const imageFile = imageFiles[i]
-          const imagePath = path.join(folderPath, imageFile)
+        for (let i = 0; i < filesWithMetadata.length; i++) {
+          const { file: imageFile, filePath: imagePath } = filesWithMetadata[i]
           const photo = photos[i]
           
           if (!photo) continue
@@ -314,7 +387,7 @@ async function importAlbumComplete(imagesFolder, albumId, albumTitle, publicIdPr
           uploadPromises.push(
             uploadToCloudinary(imagePath, publicId)
               .then(url => {
-                process.stdout.write(`\r✅ 업로드 완료 (${i + 1}/${imageFiles.length}): ${imageFile}`)
+                process.stdout.write(`\r✅ 업로드 완료 (${i + 1}/${filesWithMetadata.length}): ${imageFile}`)
                 return { index: i, url }
               })
               .catch(error => {
