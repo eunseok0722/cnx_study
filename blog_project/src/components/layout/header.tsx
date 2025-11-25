@@ -9,7 +9,7 @@ export function Header() {
 
   const navItems = [
     {href: "/photos", label: "Photos"},
-    {href: "/place", label: "Place"},
+    // {href: "/place", label: "Place"},
     {href: "/interests", label: "Interests"},
   ];
 

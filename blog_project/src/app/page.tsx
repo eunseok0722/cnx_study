@@ -80,12 +80,12 @@ export default function Home() {
           />
 
           {/* Place 캐러셀 */}
-          <Carousel 
+          {/* <Carousel 
             title="Place" 
             items={placeItems} 
             category="place"
             className="carousel-swiper"
-          />
+          /> */}
 
           {/* Interests 캐러셀 */}
           <Carousel 

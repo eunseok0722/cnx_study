@@ -1,16 +1,16 @@
 [
   {
-    "id": "2023111001",
-    "title": "2311. 제주 여행",
-    "thumbnail": "https://res.cloudinary.com/dwbqnmukr/image/upload/v1764037792/2023111001/20231111_190853.jpg",
+    "id": "2024081901",
+    "title": "2408. 예산 여행",
+    "thumbnail": "https://res.cloudinary.com/dwbqnmukr/image/upload/v1764046475/2024081901/20240820_185319.jpg",
     "category": "photos",
-    "createdAt": "2023-11-10",
-    "imageCount": 455,
-    "description": "2311. 제주 여행 앨범"
+    "createdAt": "2024-08-19",
+    "imageCount": 141,
+    "description": "2408. 예산 여행 앨범"
   },
   {
     "id": "album-25100701",
-    "title": "2510. 추석",
+    "title": "2510. 추석 여행",
     "thumbnail": "https://res.cloudinary.com/dwbqnmukr/image/upload/v1763303614/album-25100701/1759728724039.jpg",
     "category": "photos",
     "createdAt": "2025-10-07",
@@ -19,7 +19,7 @@
   },
   {
     "id": "album-250811",
-    "title": "2508. 남양주",
+    "title": "2508. 남양주 여행",
     "thumbnail": "https://res.cloudinary.com/dwbqnmukr/image/upload/v1763304524/album-250811/20250812_105555.jpg",
     "category": "photos",
     "createdAt": "2025-08-11",
@@ -28,11 +28,20 @@
   },
   {
     "id": "album-250603",
-    "title": "2506. 청와대",
+    "title": "2506. 청와대 나들이",
     "thumbnail": "https://res.cloudinary.com/dwbqnmukr/image/upload/v1763304639/album-250603/20250603_091940.jpg",
     "category": "photos",
     "createdAt": "2025-06-03",
     "imageCount": 61,
     "description": "2506. 청와대 앨범"
+  },
+  {
+    "id": "2023111001",
+    "title": "2311. 제주 여행",
+    "thumbnail": "https://res.cloudinary.com/dwbqnmukr/image/upload/v1764037792/2023111001/20231111_190853.jpg",
+    "category": "photos",
+    "createdAt": "2023-11-10",
+    "imageCount": 455,
+    "description": "2311. 제주 여행 앨범"
   }
 ]

@@ -22,6 +22,7 @@ const path = require('path')
 const https = require('https')
 const crypto = require('crypto')
 const { execSync } = require('child_process')
+const readline = require('readline')
 
 // ==================== 환경변수 로드 ====================
 try {
@@ -484,30 +485,110 @@ async function importAlbumComplete(imagesFolder, albumId, albumTitle, publicIdPr
   }
 }
 
-// ==================== 명령줄 인자 파싱 ====================
-const args = process.argv.slice(2)
-if (args.length < 3) {
-  console.log('사용 방법: node scripts/import-album-complete.js <이미지폴더경로> <앨범ID> <앨범제목> [옵션]')
-  console.log('\n옵션:')
-  console.log('  --public-id-prefix=<prefix>  Cloudinary Public ID에 prefix 추가')
-  console.log('  --skip-upload                Cloudinary 업로드 건너뜀')
-  console.log('\n예시:')
-  console.log('  node scripts/import-album-complete.js ./downloads/album1 album1 "My Album"')
-  console.log('  node scripts/import-album-complete.js ./downloads/album1 album1 "My Album" --public-id-prefix=photos')
-  console.log('  node scripts/import-album-complete.js ./downloads/album1 album1 "My Album" --skip-upload')
-  console.log('\n환경변수 (Cloudinary 업로드 시):')
-  console.log('  CLOUDINARY_CLOUD_NAME=your_cloud_name')
-  console.log('  CLOUDINARY_API_KEY=your_api_key')
-  console.log('  CLOUDINARY_API_SECRET=your_api_secret (또는 CLOUDINARY_UPLOAD_PRESET)')
-  process.exit(1)
+// ==================== 대화형 입력 받기 ====================
+function askQuestion(rl, question) {
+  return new Promise((resolve) => {
+    rl.question(question, (answer) => {
+      resolve(answer.trim())
+    })
+  })
 }
 
-const imagesFolder = args[0]
-const albumId = args[1]
-const albumTitle = args[2]
-const prefixArg = args.find(arg => arg.startsWith('--public-id-prefix='))
-const publicIdPrefix = prefixArg ? prefixArg.split('=')[1] : ''
-const skipUpload = args.includes('--skip-upload')
+async function getInputs() {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  })
 
-importAlbumComplete(imagesFolder, albumId, albumTitle, publicIdPrefix, skipUpload)
+  try {
+    console.log('📋 앨범 가져오기 정보를 입력해주세요:\n')
+
+    // 1. 이미지 폴더 경로
+    const imagesFolder = await askQuestion(rl, '이미지 폴더 경로: ')
+    if (!imagesFolder) {
+      console.error('❌ 이미지 폴더 경로는 필수입니다.')
+      process.exit(1)
+    }
+
+    // 2. 앨범 ID
+    const albumId = await askQuestion(rl, '앨범 ID: ')
+    if (!albumId) {
+      console.error('❌ 앨범 ID는 필수입니다.')
+      process.exit(1)
+    }
+
+    // 3. 앨범 제목
+    const albumTitle = await askQuestion(rl, '앨범 제목: ')
+    if (!albumTitle) {
+      console.error('❌ 앨범 제목은 필수입니다.')
+      process.exit(1)
+    }
+
+    // 4. 프리픽스 (공란으로 엔터 시 스킵)
+    const publicIdPrefix = await askQuestion(rl, '프리픽스 (공란으로 엔터 시 스킵): ')
+
+    // 5. 업로드 여부
+    let skipUpload = false
+    while (true) {
+      const uploadAnswer = await askQuestion(rl, '업로드 여부 (y/n): ')
+      const lowerAnswer = uploadAnswer.toLowerCase()
+      if (lowerAnswer === 'y' || lowerAnswer === 'yes') {
+        skipUpload = false
+        break
+      } else if (lowerAnswer === 'n' || lowerAnswer === 'no') {
+        skipUpload = true
+        break
+      } else {
+        console.log('⚠️  y 또는 n을 입력해주세요.')
+      }
+    }
+
+    rl.close()
+
+    return {
+      imagesFolder,
+      albumId,
+      albumTitle,
+      publicIdPrefix: publicIdPrefix || '',
+      skipUpload
+    }
+  } catch (error) {
+    rl.close()
+    throw error
+  }
+}
+
+// ==================== 메인 실행 ====================
+async function main() {
+  // 명령줄 인자가 있으면 기존 방식 사용 (하위 호환성)
+  const args = process.argv.slice(2)
+  if (args.length >= 3) {
+    console.log('📝 명령줄 인자 모드로 실행합니다.\n')
+    const imagesFolder = args[0]
+    const albumId = args[1]
+    const albumTitle = args[2]
+    const prefixArg = args.find(arg => arg.startsWith('--public-id-prefix='))
+    const publicIdPrefix = prefixArg ? prefixArg.split('=')[1] : ''
+    const skipUpload = args.includes('--skip-upload')
+    
+    await importAlbumComplete(imagesFolder, albumId, albumTitle, publicIdPrefix, skipUpload)
+  } else {
+    // 대화형 입력 모드
+    const inputs = await getInputs()
+    console.log('\n')
+    await importAlbumComplete(
+      inputs.imagesFolder,
+      inputs.albumId,
+      inputs.albumTitle,
+      inputs.publicIdPrefix,
+      inputs.skipUpload
+    )
+  }
+}
+
+main().catch((error) => {
+  console.error('\n❌ 오류 발생:', error.message)
+  console.error(error.stack)
+  process.exit(1)
+})
 
