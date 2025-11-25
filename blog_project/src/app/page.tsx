@@ -2,14 +2,17 @@
 
 import { useEffect } from 'react'
 import { Carousel } from '@/components/home/carousel'
+import { CarouselSkeleton } from '@/components/home/carousel-skeleton'
 import { useAppStore } from '@/store'
 
 export default function Home() {
   const { 
     recentWork, 
     albums, 
-    places, 
+    // places, // Place 섹션이 주석 처리되어 있어서 사용하지 않음
     youtubePlaylists,
+    albumsLoading,
+    youtubeLoading,
     fetchAlbums, 
     fetchPlaces, 
     fetchYouTubePlaylists 
@@ -31,13 +34,13 @@ export default function Home() {
     createdAt: album.createdAt,
   }))
 
-  const placeItems = places.map(place => ({
-    id: place.id,
-    title: place.title,
-    thumbnail: place.thumbnail,
-    category: 'place' as const,
-    createdAt: place.createdAt,
-  }))
+  // const placeItems = places.map(place => ({
+  //   id: place.id,
+  //   title: place.title,
+  //   thumbnail: place.thumbnail,
+  //   category: 'place' as const,
+  //   createdAt: place.createdAt,
+  // }))
 
   const interestsItems = youtubePlaylists.map(playlist => ({
     id: playlist.id,
@@ -64,20 +67,28 @@ export default function Home() {
           </div>
           
           {/* RECENT WORK 섹션 */}
-          <Carousel 
-            items={recentWork?.slice(0, 8) || []} 
-            title="RECENT WORK"
-            removeIdPrefix={true}
-            className="carousel-swiper"
-          />
+          {albumsLoading || youtubeLoading || !recentWork || recentWork.length === 0 ? (
+            <CarouselSkeleton title="RECENT WORK" itemCount={3} />
+          ) : (
+            <Carousel 
+              items={recentWork?.slice(0, 8) || []} 
+              title="RECENT WORK"
+              removeIdPrefix={true}
+              className="carousel-swiper"
+            />
+          )}
 
           {/* Photos 캐러셀 */}
-          <Carousel 
-            title="Photos" 
-            items={photosItems} 
-            category="photos"
-            className="carousel-swiper"
-          />
+          {albumsLoading ? (
+            <CarouselSkeleton title="Photos" itemCount={3} />
+          ) : (
+            <Carousel 
+              title="Photos" 
+              items={photosItems} 
+              category="photos"
+              className="carousel-swiper"
+            />
+          )}
 
           {/* Place 캐러셀 */}
           {/* <Carousel 
@@ -88,12 +99,16 @@ export default function Home() {
           /> */}
 
           {/* Interests 캐러셀 */}
-          <Carousel 
-            title="Interests" 
-            items={interestsItems} 
-            category="youtube"
-            className="carousel-swiper"
-          />
+          {youtubeLoading ? (
+            <CarouselSkeleton title="Interests" itemCount={3} />
+          ) : (
+            <Carousel 
+              title="Interests" 
+              items={interestsItems} 
+              category="youtube"
+              className="carousel-swiper"
+            />
+          )}
         </div>
       </div>
     </div>

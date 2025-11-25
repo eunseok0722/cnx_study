@@ -26,23 +26,6 @@ export default function InterestsPage() {
     setYouTubePagination({ currentPage: page })
   }
 
-  if (youtubeLoading) {
-    return (
-      <div className="pt-20 min-h-screen bg-gray-50">
-        <div className="container mx-auto px-6 py-12">
-          <div className="max-w-6xl mx-auto">
-            <div className="flex items-center justify-center h-64">
-              <div className="text-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto mb-4"></div>
-                <p className="text-gray-600">흥미거리를 불러오는 중...</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
   if (youtubeError) {
     return (
       <div className="pt-20 min-h-screen bg-gray-50">
@@ -86,6 +69,7 @@ export default function InterestsPage() {
           totalPages={totalPages}
           onPageChange={handlePageChange}
           category="youtube"
+          isLoading={youtubeLoading}
         />
       </div>
     </div>

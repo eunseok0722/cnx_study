@@ -24,16 +24,6 @@ export default function PlacePage() {
     setPlacesPagination({ currentPage: page })
   }
   
-  if (placesLoading) {
-    return (
-      <div className="pt-20 min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-gray-600">로딩 중...</p>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <div className="pt-20 min-h-screen bg-gray-50">
       <div className="container mx-auto px-6 py-12">
@@ -54,6 +44,7 @@ export default function PlacePage() {
           totalPages={totalPages}
           onPageChange={handlePageChange}
           category="place"
+          isLoading={placesLoading}
         />
       </div>
     </div>
