@@ -1,9 +1,11 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import {Swiper, SwiperSlide} from "swiper/react";
 import {Navigation, Pagination} from "swiper/modules";
 import {Button} from "@/components/ui/button";
-import {ChevronLeft, ChevronRight} from "lucide-react";
+import {ChevronLeft, ChevronRight, ArrowLeft} from "lucide-react";
 import {DetailItem} from "@/types";
 
 interface DetailSwiperProps {
@@ -11,18 +13,52 @@ interface DetailSwiperProps {
   title: string;
   createdAt: string;
   totalCount: number;
+  initialSlide?: number; // 특정 슬라이드부터 시작 (0부터 시작)
+  albumId?: string; // 앨범 ID (뒤로가기용)
+  itemsPerPage?: number; // 페이지당 아이템 수 (뒤로가기용, 기본값 15)
 }
 
-export function DetailSwiper({items, title, createdAt, totalCount}: DetailSwiperProps) {
+export function DetailSwiper({
+  items, 
+  title, 
+  createdAt, 
+  totalCount, 
+  initialSlide = 0,
+  albumId,
+  itemsPerPage = 15
+}: DetailSwiperProps) {
+  const router = useRouter()
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(initialSlide)
+
+  const handleBack = () => {
+    if (albumId) {
+      // 현재 슬라이드 인덱스를 기반으로 페이지 번호 계산
+      const page = Math.floor(currentSlideIndex / itemsPerPage) + 1
+      router.push(`/photos/${albumId}?page=${page}`)
+    } else {
+      // albumId가 없으면 기본 뒤로가기
+      router.back()
+    }
+  }
   return (
     <div className="min-h-screen bg-black detail-swiper">
       {/* 정보 헤더 */}
       <div className="absolute top-20 left-0 right-0 z-10 bg-black/50 backdrop-blur-sm">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between text-white">
-            <div>
-              <h1 className="text-2xl font-bold">{title}</h1>
-              <p className="text-gray-300">{createdAt}</p>
+            <div className="flex items-center space-x-4">
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={handleBack}
+                className="bg-white/20 border-white/30 text-white hover:bg-white/30"
+              >
+                <ArrowLeft className="h-4 w-4" />
+              </Button>
+              <div>
+                <h1 className="text-2xl font-bold">{title}</h1>
+                <p className="text-gray-300">{createdAt}</p>
+              </div>
             </div>
             <div className="text-right">
               <p className="text-sm text-gray-300">총 {totalCount}장</p>
@@ -37,6 +73,7 @@ export function DetailSwiper({items, title, createdAt, totalCount}: DetailSwiper
           modules={[Navigation, Pagination]}
           spaceBetween={0}
           slidesPerView={1}
+          initialSlide={initialSlide}
           navigation={{
             nextEl: ".swiper-button-next",
             prevEl: ".swiper-button-prev",
@@ -47,7 +84,9 @@ export function DetailSwiper({items, title, createdAt, totalCount}: DetailSwiper
             formatFractionCurrent: (number) => number.toString().padStart(2, "0"),
             formatFractionTotal: (number) => number.toString().padStart(2, "0"),
           }}
-          onSlideChange={() => {}}
+          onSlideChange={(swiper) => {
+            setCurrentSlideIndex(swiper.activeIndex)
+          }}
           className="h-full"
         >
           {items.map((item) => (
