@@ -7,6 +7,7 @@ export interface Album {
   createdAt: string
   imageCount: number
   description: string
+  playlistId?: string // 연결된 YouTube 재생목록 ID
 }
 
 // 장소 관련 타입 (기존 호환성을 위해 유지)

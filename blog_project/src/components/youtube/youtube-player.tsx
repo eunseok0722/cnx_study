@@ -10,6 +10,7 @@ interface YouTubePlayerProps {
   onStateChange?: (state: YouTubePlayerState) => void
   onError?: (error: string) => void
   className?: string
+  playerRef?: React.MutableRefObject<any> // 플레이어 인스턴스를 외부에 노출
 }
 
 export function YouTubePlayer({ 
@@ -17,10 +18,18 @@ export function YouTubePlayer({
   isPlaying, 
   onStateChange, 
   onError,
-  className = '' 
+  className = '',
+  playerRef: externalPlayerRef
 }: YouTubePlayerProps) {
   const playerRef = useRef<HTMLDivElement>(null)
   const playerInstanceRef = useRef<any>(null)
+  
+  // 외부 ref가 제공되면 플레이어 인스턴스를 노출
+  useEffect(() => {
+    if (externalPlayerRef) {
+      externalPlayerRef.current = playerInstanceRef.current
+    }
+  }, [externalPlayerRef, playerInstanceRef.current])
   const [isReady, setIsReady] = useState(false)
   const [playerState, setPlayerState] = useState<YouTubePlayerState>({
     isPlaying: false,
@@ -43,6 +52,10 @@ export function YouTubePlayer({
             onReady: (event: any) => {
               try {
                 playerInstanceRef.current = event.target
+                // 외부 ref에 플레이어 인스턴스 노출
+                if (externalPlayerRef) {
+                  externalPlayerRef.current = event.target
+                }
                 setIsReady(true)
                 console.log('YouTube Player ready for video:', video.videoId)
                 setPlayerState(prev => ({

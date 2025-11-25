@@ -13,8 +13,18 @@ export default function AlbumPhotosPage() {
   const searchParams = useSearchParams()
   const albumId = params.albumId as string
   
-  const { getAlbumById, getAlbumPhotos, fetchAlbums, albums } = useAppStore()
+  const { getAlbumById, getAlbumPhotos, fetchAlbums, albums, setActivePlaylist, clearActivePlaylist } = useAppStore()
   const album = getAlbumById(albumId)
+  
+  // 앨범에 재생목록이 있으면 플레이어 활성화, 없으면 비활성화
+  useEffect(() => {
+    if (album?.playlistId) {
+      setActivePlaylist(album.playlistId, albumId)
+    } else {
+      // 재생목록이 없으면 플레이어 비활성화
+      clearActivePlaylist()
+    }
+  }, [album?.playlistId, albumId, setActivePlaylist, clearActivePlaylist])
   const [photos, setPhotos] = useState<DetailItem[]>([])
   const [loading, setLoading] = useState(true)
   // URL 쿼리 파라미터에서 페이지 번호 읽기

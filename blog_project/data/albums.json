@@ -24,7 +24,8 @@
     "category": "photos",
     "createdAt": "2025-08-11",
     "imageCount": 206,
-    "description": "2508. 남양주 앨범"
+    "description": "2508. 남양주 앨범",
+    "playlistId": "PLCyiNBq452bwW2knm3XhlqvGgc5i3lM9K"
   },
   {
     "id": "album-250603",
@@ -42,6 +43,7 @@
     "category": "photos",
     "createdAt": "2023-11-10",
     "imageCount": 455,
-    "description": "2311. 제주 여행 앨범"
+    "description": "2311. 제주 여행 앨범",
+    "playlistId": "PLCyiNBq452bxfAD-iydHpt5sj5uewFcWZ"
   }
 ]

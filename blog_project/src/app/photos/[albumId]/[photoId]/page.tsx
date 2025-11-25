@@ -12,11 +12,21 @@ export default function PhotoDetailPage() {
   const albumId = params.albumId as string
   const photoId = params.photoId as string
   
-  const { getAlbumById, getAlbumPhotos, fetchAlbums, albums } = useAppStore()
+  const { getAlbumById, getAlbumPhotos, fetchAlbums, albums, setActivePlaylist, clearActivePlaylist } = useAppStore()
   const album = getAlbumById(albumId)
   const [photos, setPhotos] = useState<DetailItem[]>([])
   const [loading, setLoading] = useState(true)
   const [initialSlide, setInitialSlide] = useState(0)
+  
+  // 앨범에 재생목록이 있으면 플레이어 활성화, 없으면 비활성화
+  useEffect(() => {
+    if (album?.playlistId) {
+      setActivePlaylist(album.playlistId, albumId)
+    } else {
+      // 재생목록이 없으면 플레이어 비활성화
+      clearActivePlaylist()
+    }
+  }, [album?.playlistId, albumId, setActivePlaylist, clearActivePlaylist])
 
   useEffect(() => {
     const loadPhotos = async () => {

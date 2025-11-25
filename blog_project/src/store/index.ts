@@ -298,6 +298,10 @@ interface AppStore {
   placesPagination: PaginationState
   youtubePagination: PaginationState
   
+  // 플로팅 플레이어 상태
+  activePlaylistId: string | null
+  activeAlbumId: string | null
+  
   // 액션들
   fetchAlbums: () => Promise<void>
   fetchPlaces: () => Promise<void>
@@ -319,6 +323,10 @@ interface AppStore {
   setPhotosPagination: (pagination: Partial<PaginationState>) => void
   setPlacesPagination: (pagination: Partial<PaginationState>) => void
   setYouTubePagination: (pagination: Partial<PaginationState>) => void
+  
+  // 플로팅 플레이어 액션들
+  setActivePlaylist: (playlistId: string | null, albumId: string | null) => void
+  clearActivePlaylist: () => void
 }
 
 // Store 생성
@@ -360,6 +368,10 @@ export const useAppStore = create<AppStore>((set, get) => ({
     itemsPerPage: 9,
     totalPages: 0
   },
+  
+  // 플로팅 플레이어 초기 상태
+  activePlaylistId: null,
+  activeAlbumId: null,
   
   // Albums & Places 액션들
   fetchAlbums: async () => {
@@ -838,5 +850,20 @@ export const useAppStore = create<AppStore>((set, get) => ({
   getYouTubePlaylistVideos: (playlistId: string) => {
     const { youtubePlaylistVideos } = get()
     return youtubePlaylistVideos[playlistId] || []
+  },
+  
+  // 플로팅 플레이어 액션들
+  setActivePlaylist: (playlistId: string | null, albumId: string | null) => {
+    set({
+      activePlaylistId: playlistId,
+      activeAlbumId: albumId
+    })
+  },
+  
+  clearActivePlaylist: () => {
+    set({
+      activePlaylistId: null,
+      activeAlbumId: null
+    })
   }
 }))
