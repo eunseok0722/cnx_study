@@ -184,6 +184,7 @@ export default function AlbumPhotosPage() {
               <NaverMapBanner 
                 locations={favoriteLocations}
                 height={300}
+                favoriteMapUrl={album?.favoriteMapUrl}
               />
             </div>
           )}

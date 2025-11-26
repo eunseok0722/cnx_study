@@ -99,83 +99,83 @@
     "playlistId": "PLCyiNBq452bxfAD-iydHpt5sj5uewFcWZ",
     "favoriteMapUrl": "https://naver.me/5EnDlZyJ",
     "favoriteLocations": [
-  {
-    "title": "면주막 제주본점",
-    "description": "국수",
-    "address": "제주특별자치도 제주시 조천읍 와흘리 125-7 1층",
-    "latitude": 33.4707882,
-    "longitude": 126.6570166
-  },
-  {
-    "title": "교래향 에코랜드 본점",
-    "description": "향토음식",
-    "address": "제주특별자치도 제주시 조천읍 교래리 602-12 1층",
-    "latitude": 33.4274625,
-    "longitude": 126.6721849
-  },
-  {
-    "title": "에코랜드 호텔",
-    "description": "호텔",
-    "address": "제주특별자치도 제주시 조천읍 대흘리 1221-1",
-    "latitude": 33.4617075,
-    "longitude": 126.6703845
-  },
-  {
-    "title": "산굼부리",
-    "description": "골짜기, 고개",
-    "address": "제주특별자치도 제주시 조천읍 교래리 342-2",
-    "latitude": 33.4273021,
-    "longitude": 126.6616589
-  },
-  {
-    "title": "카페갤러리",
-    "description": "카페, 디저트",
-    "address": "제주특별자치도 제주시 조천읍 교래리 188-3",
-    "latitude": 33.4151094,
-    "longitude": 126.6456222
-  },
-  {
-    "title": "올레리조트",
-    "description": "콘도, 리조트",
-    "address": "제주특별자치도 제주시 애월읍 신엄리 2807-3",
-    "latitude": 33.4761598,
-    "longitude": 126.3542397
-  },
-  {
-    "title": "램앤블랙 제주 본점",
-    "description": "육류, 고기요리",
-    "address": "제주특별자치도 제주시 조천읍 교래리 471-3",
-    "latitude": 33.436813,
-    "longitude": 126.6730229
-  },
-  {
-    "title": "항파두리항몽유적지",
-    "description": "유적지, 사적지",
-    "address": "제주특별자치도 제주시 애월읍 상귀리 1012",
-    "latitude": 33.4525581,
-    "longitude": 126.4078884
-  },
-  {
-    "title": "해녀김밥 본점",
-    "description": "김밥",
-    "address": "제주특별자치도 제주시 조천읍 함덕리 4195 3층, 302호",
-    "latitude": 33.53117,
-    "longitude": 126.6673116
-  },
-  {
-    "title": "새미동산 꽃밭",
-    "description": "카페, 디저트",
-    "address": "제주특별자치도 제주시 조천읍 와흘리 2160-3",
-    "latitude": 33.495138,
-    "longitude": 126.6235613
-  },
-  {
-    "title": "카페 글렌코",
-    "description": "카페, 디저트",
-    "address": "제주특별자치도 제주시 구좌읍 송당리 2635-8",
-    "latitude": 33.4331362,
-    "longitude": 126.7335197
-  }
-]
+      {
+        "title": "면주막 제주본점",
+        "description": "국수",
+        "address": "제주특별자치도 제주시 조천읍 와흘리 125-7 1층",
+        "latitude": 33.4707882,
+        "longitude": 126.6570166
+      },
+      {
+        "title": "교래향 에코랜드 본점",
+        "description": "향토음식",
+        "address": "제주특별자치도 제주시 조천읍 교래리 602-12 1층",
+        "latitude": 33.4274625,
+        "longitude": 126.6721849
+      },
+      {
+        "title": "에코랜드 호텔",
+        "description": "호텔",
+        "address": "제주특별자치도 제주시 조천읍 대흘리 1221-1",
+        "latitude": 33.4617075,
+        "longitude": 126.6703845
+      },
+      {
+        "title": "산굼부리",
+        "description": "골짜기, 고개",
+        "address": "제주특별자치도 제주시 조천읍 교래리 342-2",
+        "latitude": 33.4273021,
+        "longitude": 126.6616589
+      },
+      {
+        "title": "카페갤러리",
+        "description": "카페, 디저트",
+        "address": "제주특별자치도 제주시 조천읍 교래리 188-3",
+        "latitude": 33.4151094,
+        "longitude": 126.6456222
+      },
+      {
+        "title": "올레리조트",
+        "description": "콘도, 리조트",
+        "address": "제주특별자치도 제주시 애월읍 신엄리 2807-3",
+        "latitude": 33.4761598,
+        "longitude": 126.3542397
+      },
+      {
+        "title": "램앤블랙 제주 본점",
+        "description": "육류, 고기요리",
+        "address": "제주특별자치도 제주시 조천읍 교래리 471-3",
+        "latitude": 33.436813,
+        "longitude": 126.6730229
+      },
+      {
+        "title": "항파두리항몽유적지",
+        "description": "유적지, 사적지",
+        "address": "제주특별자치도 제주시 애월읍 상귀리 1012",
+        "latitude": 33.4525581,
+        "longitude": 126.4078884
+      },
+      {
+        "title": "해녀김밥 본점",
+        "description": "김밥",
+        "address": "제주특별자치도 제주시 조천읍 함덕리 4195 3층, 302호",
+        "latitude": 33.53117,
+        "longitude": 126.6673116
+      },
+      {
+        "title": "새미동산 꽃밭",
+        "description": "카페, 디저트",
+        "address": "제주특별자치도 제주시 조천읍 와흘리 2160-3",
+        "latitude": 33.495138,
+        "longitude": 126.6235613
+      },
+      {
+        "title": "카페 글렌코",
+        "description": "카페, 디저트",
+        "address": "제주특별자치도 제주시 구좌읍 송당리 2635-8",
+        "latitude": 33.4331362,
+        "longitude": 126.7335197
+      }
+    ]
   }
 ]

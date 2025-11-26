@@ -6,6 +6,7 @@ import { MapLocation } from '@/types'
 interface NaverMapBannerProps {
   locations: MapLocation[] // 여러 위치를 받을 수 있도록 변경
   height?: number
+  favoriteMapUrl?: string // 네이버 지도 즐겨찾기 리스트 URL
 }
 
 // 네이버 지도 API 타입 정의
@@ -77,7 +78,7 @@ declare global {
   }
 }
 
-export function NaverMapBanner({ locations, height = 300 }: NaverMapBannerProps) {
+export function NaverMapBanner({ locations, height = 300, favoriteMapUrl }: NaverMapBannerProps) {
   const mapRef = useRef<HTMLDivElement>(null)
   const [isLoaded, setIsLoaded] = useState(false)
   const [mapError, setMapError] = useState<string | null>(null)
@@ -176,9 +177,16 @@ export function NaverMapBanner({ locations, height = 300 }: NaverMapBannerProps)
         markersRef.current.push(marker)
 
         // 정보창 추가
-        const infoContent = location.title 
-          ? `<div style="padding:10px;min-width:200px;text-align:center;"><strong>${location.title}</strong>${location.description ? `<br/><small>${location.description}</small>` : ''}</div>`
-          : `<div style="padding:10px;min-width:200px;text-align:center;">위치 ${index + 1}</div>`
+        let infoContent = location.title 
+          ? `<div style="padding:10px;min-width:200px;text-align:center;"><strong>${location.title}</strong>${location.description ? `<br/><small>${location.description}</small>` : ''}`
+          : `<div style="padding:10px;min-width:200px;text-align:center;">위치 ${index + 1}`
+        
+        // favoriteMapUrl이 있으면 링크 추가
+        if (favoriteMapUrl) {
+          infoContent += `<br/><a href="${favoriteMapUrl}" target="_blank" rel="noopener noreferrer" style="display:inline-block;margin-top:8px;padding:6px 12px;background-color:#03C75A;color:white;text-decoration:none;border-radius:4px;font-size:12px;cursor:pointer;">지도에서 보기</a>`
+        }
+        
+        infoContent += `</div>`
         
         const infoWindow = new window.naver.maps.InfoWindow({
           content: infoContent
