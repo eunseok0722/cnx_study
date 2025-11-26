@@ -132,9 +132,13 @@ export function NaverMapBanner({ locations, height = 300, favoriteMapUrl }: Nave
   }, [locations, isLoaded])
 
   const initializeMap = () => {
-    if (!mapRef.current || !window.naver || !window.naver.maps || locations.length === 0) {
+    // TypeScript 타입 체크를 위해 변수에 저장
+    const naver = window.naver
+    if (!mapRef.current || !naver || !naver.maps || locations.length === 0) {
       return
     }
+
+    const maps = naver.maps
 
     try {
       // 기존 마커와 정보창 제거
@@ -150,27 +154,27 @@ export function NaverMapBanner({ locations, height = 300, favoriteMapUrl }: Nave
       // 첫 번째 위치를 중심으로 지도 초기화
       const firstLocation = locations[0]
       const mapOptions = {
-        center: new window.naver.maps.LatLng(firstLocation.latitude, firstLocation.longitude),
+        center: new maps.LatLng(firstLocation.latitude, firstLocation.longitude),
         zoom: 12,
         zoomControl: true,
         zoomControlOptions: {
-          position: window.naver.maps.Position.TOP_RIGHT
+          position: maps.Position.TOP_RIGHT
         }
       }
 
-      const map = new window.naver.maps.Map(mapRef.current, mapOptions)
+      const map = new maps.Map(mapRef.current, mapOptions)
       mapInstanceRef.current = map
 
       // 모든 위치에 대한 경계 계산
-      const bounds = new window.naver.maps.LatLngBounds()
+      const bounds = new maps.LatLngBounds()
 
       // 각 위치에 마커 추가
       locations.forEach((location, index) => {
-        const position = new window.naver.maps.LatLng(location.latitude, location.longitude)
+        const position = new maps.LatLng(location.latitude, location.longitude)
         bounds.extend(position)
 
         // 마커 추가
-        const marker = new window.naver.maps.Marker({
+        const marker = new maps.Marker({
           position: position,
           map: map
         })
@@ -188,13 +192,13 @@ export function NaverMapBanner({ locations, height = 300, favoriteMapUrl }: Nave
         
         infoContent += `</div>`
         
-        const infoWindow = new window.naver.maps.InfoWindow({
+        const infoWindow = new maps.InfoWindow({
           content: infoContent
         })
         infoWindowsRef.current.push(infoWindow)
 
         // 마커 클릭 시 정보창 표시
-        window.naver.maps.Event.addListener(marker, 'click', () => {
+        maps.Event.addListener(marker, 'click', () => {
           // 다른 정보창 닫기
           infoWindowsRef.current.forEach((iw, i) => {
             if (i !== index && iw.getMap()) {
