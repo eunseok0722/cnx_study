@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { Header } from '@/components/layout/header'
 import { GalleryGrid } from '@/components/gallery/gallery-grid'
+import { NaverMapBanner } from '@/components/map/naver-map-banner'
 import { useAppStore } from '@/store'
 import { DetailItem, GalleryItem } from '@/types'
 
@@ -78,6 +79,9 @@ export default function AlbumPhotosPage() {
     createdAt: album?.createdAt || '',
     subtitle: photo.description,
   }))
+
+  // 앨범의 즐겨찾기 리스트 위치 정보 가져오기
+  const favoriteLocations = album?.favoriteLocations || []
 
   // 페이지네이션 계산
   const totalPages = Math.ceil(galleryItems.length / itemsPerPage)
@@ -173,6 +177,16 @@ export default function AlbumPhotosPage() {
               )}
             </div>
           </div>
+
+          {/* 지도 배너 - 즐겨찾기 리스트 위치 정보가 있는 경우 표시 */}
+          {!loading && favoriteLocations.length > 0 && (
+            <div className="max-w-6xl mx-auto mb-8">
+              <NaverMapBanner 
+                locations={favoriteLocations}
+                height={300}
+              />
+            </div>
+          )}
 
           {/* 갤러리 그리드 */}
           <GalleryGrid

@@ -6,7 +6,59 @@
     "category": "photos",
     "createdAt": "2024-08-19",
     "imageCount": 141,
-    "description": "2408. 예산 여행 앨범"
+    "description": "2408. 예산 여행 앨범",
+    "favoriteMapUrl": "https://naver.me/Fm3qK1z5",
+    "favoriteLocations": [
+      {
+        "title": "대흥 식당",
+        "description": "한정식",
+        "address": "충청남도 예산군 덕산면 사천리 25-13",
+        "latitude": 36.6568143,
+        "longitude": 126.6206769
+      },
+      {
+        "title": "수덕사별미식당",
+        "description": "한정식",
+        "address": "충청남도 예산군 덕산면 사천리 25-37 별미식당",
+        "latitude": 36.656823,
+        "longitude": 126.6210383
+      },
+      {
+        "title": "사과나무",
+        "description": "양식",
+        "address": "충청남도 예산군 삽교읍 상하리 372-29",
+        "latitude": 36.6970031,
+        "longitude": 126.6855
+      },
+      {
+        "title": "여기서 행복할 것",
+        "description": "카페",
+        "address": "충청남도 예산군 삽교읍 상하리 372-29 여기서 행복할것",
+        "latitude": 36.6976317,
+        "longitude": 126.6853958
+      },
+      {
+        "title": "본가두부전문점",
+        "description": "두부요리",
+        "address": "충청남도 예산군 덕산면 신평리 249-2",
+        "latitude": 36.6842317,
+        "longitude": 126.6596958
+      },
+      {
+        "title": "수덕사",
+        "description": "절, 사찰",
+        "address": "충청남도 예산군 덕산면 사천리 19 수덕사",
+        "latitude": 36.6630169,
+        "longitude": 126.6225493
+      },
+      {
+        "title": "덕산 메타세쿼이아길",
+        "description": "자연명소",
+        "address": "충청남도 예산군 덕산면 사동리 477",
+        "latitude": 36.6877069,
+        "longitude": 126.6592683
+      }
+    ]
   },
   {
     "id": "album-25100701",

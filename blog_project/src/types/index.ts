@@ -1,3 +1,11 @@
+// 지도 위치 정보 타입
+export interface MapLocation {
+  latitude: number
+  longitude: number
+  title?: string
+  description?: string
+}
+
 // 통합 아이템 타입
 export interface Album {
   id: string
@@ -8,6 +16,8 @@ export interface Album {
   imageCount: number
   description: string
   playlistId?: string // 연결된 YouTube 재생목록 ID
+  favoriteMapUrl?: string // 네이버 지도 즐겨찾기 리스트 URL
+  favoriteLocations?: MapLocation[] // 즐겨찾기 리스트의 위치 정보 배열
 }
 
 // 장소 관련 타입 (기존 호환성을 위해 유지)
@@ -28,6 +38,8 @@ export interface DetailItem {
   title: string
   description: string
   image: string
+  latitude?: number // 지도 위도 (선택적)
+  longitude?: number // 지도 경도 (선택적)
 }
 
 // 페이지네이션 관련 타입
