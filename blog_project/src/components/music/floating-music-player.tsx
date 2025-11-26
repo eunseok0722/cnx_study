@@ -173,7 +173,7 @@ export function FloatingMusicPlayer({ playlistId, className = '' }: FloatingMusi
             {/* 닫기 버튼 - 좌측 상단 */}
             <button
               onClick={() => setIsMinimized(true)}
-              className="absolute top-2 left-2 p-1.5 hover:bg-gray-100 rounded-full transition-colors text-gray-400 hover:text-gray-600 z-10"
+              className="absolute top-2 right-2 p-1.5 hover:bg-gray-100 rounded-full transition-colors text-gray-400 hover:text-gray-600 z-10"
               title="최소화"
             >
               <X className="w-4 h-4" />
@@ -211,7 +211,7 @@ export function FloatingMusicPlayer({ playlistId, className = '' }: FloatingMusi
             {/* 곡 정보 및 컨트롤 */}
             <div className="flex-1 min-w-0">
               {/* 곡 제목 및 아티스트 */}
-              <div className="mb-2">
+              <div className="mb-2 mr-6">
                 <h3 className="text-sm font-bold text-gray-900 truncate mb-0.5">
                   {currentVideo?.title || '재생 중...'}
                 </h3>
